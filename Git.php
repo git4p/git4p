@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class representing a single Git repository.
+ * 
+ * @todo Add pack support
+ */
 class Git {
     const   DIR_BASE     = '.git/';
     const   DIR_OBJECTS  = '.git/objects/';

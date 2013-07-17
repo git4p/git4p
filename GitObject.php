@@ -41,8 +41,11 @@ class GitObject {
     
     public function __toString() {
         $ret = '';
+        $vars = get_object_vars($this);
+        ksort($vars);
         
-        foreach(get_object_vars($this) as $key => $var) {
+        foreach($vars as $key => $var) {
+            if ($key == 'rawdata') continue;
             $ret .= "$key: $var\n";
         }
         

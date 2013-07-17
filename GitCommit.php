@@ -1,70 +1,101 @@
 <?php
 
 class GitCommit extends GitObject {
-    protected $tree = false;
-    protected $parent = false;
-    protected $authorName;
-    protected $authorEmail;
-    protected $authorTimestamp;
-    protected $authorTimestampOffset;
-    protected $committerName;
-    protected $committerEmail;
-    protected $committerTimestamp;
-    protected $committerTimestampOffset;
-    protected $description='';
     
-    public function readFromDisk($sha) {
-        //Git::readFromDisk($sha);
+    /* Commit object specific variables */
+    protected $tree       = false,
+              $parent     = false,
+              $aName      = false,
+              $aEmail     = false,
+              $aTimestamp = false,
+              $aOffset    = false,
+              $cName      = false,
+              $cEmail     = false,
+              $cTimestamp = false,
+              $cOffset    = false,
+              $message    = false;
+    
+    public function __construct($sha, $data) {
+        parent::__construct($sha, $data);
         
-        $tosplit = $this->content;
-        $split = explode("\n", $tosplit);
-        foreach($split as $line) {
-            $line = trim($line);
-            
-            if (startsWith($line, 'tree')) {
-                $line = explode(' ', $line);
-                $this->tree = $line[1];
-                continue;
-            }
-            
-            if (startsWith($line, 'parent')) {
-                $line = explode(' ', $line);
-                $this->parent = $line[1];
-                continue;
-            }
-            
-            if (startsWith($line, 'author')) {
-                $line = explode(' ', $line);
-                $this->authorName = $line[1];
-                $this->authorEmail = $line[2];
-                $this->authorTimestamp = $line[3];
-                $this->authorTimestampOffset = $line[4];
-                continue;
-            }
-            
-            if (startsWith($line, 'committer')) {
-                $line = explode(' ', $line);
-                $this->committerName = $line[1];
-                $this->committerEmail = $line[2];
-                $this->committerTimestamp = $line[3];
-                $this->committerTimestampOffset = $line[4];
-                continue;
-            }
-            
-            $this->description .= "\n";
-            $this->description .= $line;
-        }
+        $this->loadData();
     }
-    
-    public function __toString() {
-        return parent::__toString();
+
+    public function getTree() {
+        return $this->tree;
     }
 
     public function getParent() {
         return $this->parent;
     }
     
-    public function getTree() {
-        return $this->tree;
+    public function getMessage() {
+        return $this->message;
+    }
+
+    public function getAuthorName() {
+        return $this->aName;
+    }
+    
+    public function getAuthorEmail() {
+        return $this->aEmail;
+    }
+    
+    public function getAuthorTimestamp() {
+        return $this->aTimestamp;
+    }
+    
+    public function getAuthorOffset() {
+        return $this->aOffset;
+    }
+    
+    public function getCommitterName() {
+        return $this->aName;
+    }
+    
+    public function getCommitterEmail() {
+        return $this->aEmail;
+    }
+    
+    public function getCommitterTimestamp() {
+        return $this->aTimestamp;
+    }
+    
+    public function getCommitterOffset() {
+        return $this->aOffset;
+    }
+
+    private function loadData() {
+        $lines = explode("\n", $this->rawdata);
+        
+        foreach($lines as $line) {
+            $line = trim($line);
+            $elements = explode(' ', $line, 2);
+            
+            if (count($elements) == 1) {
+                $this->message .= "\n";
+                $this->message .= $elements[0];
+                continue;
+            }
+            
+            switch($elements[0]) {
+                case 'tree':
+                    $this->tree = $elements[1];
+                    break;
+                case 'parent':
+                    $this->parent = $elements[1];
+                    break;
+                case 'author':
+                    sscanf($elements[1], "%s %s %d %s", $this->aName, $this->aEmail, $this->aTimestamp, $this->aOffset);
+                    break;
+                case 'committer':
+                    sscanf($elements[1], "%s %s %d %s", $this->cName, $this->cEmail, $this->cTimestamp, $this->cOffset);
+                    break;
+                default:
+                    $this->message .= "\n";
+                    $this->message .= $elements[0].' '.$elements[1];
+                    break;
+            }
+        }
     }
 }

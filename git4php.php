@@ -6,9 +6,10 @@ Git4PHP Library.
 
 Development plan:
 
-- Read only support
-- Write support
-- Management / cleanup support
+- Add read only support for single objects
+- Add pack support
+- Add write support
+- Add management / cleanup support (git gc)
 
  */
 
