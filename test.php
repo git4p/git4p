@@ -4,7 +4,7 @@
 
 include "git4php.php";
 
-$dir = '/home/klm23563/projects/git4php/testrepo/';
+$dir = dirname(__FILE__).'/testrepo/';
 $git = new Git($dir);
 
 $head = $git->getHeadObject();
