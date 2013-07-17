@@ -15,8 +15,8 @@ class GitCommit extends GitObject {
               $cOffset    = false,
               $message    = false;
     
-    public function __construct($sha, $data) {
-        parent::__construct($sha, $data);
+    public function __construct($sha, $data, $git) {
+        parent::__construct($sha, $data, $git);
         
         $this->loadData();
     }
@@ -25,8 +25,16 @@ class GitCommit extends GitObject {
         return $this->tree;
     }
     
+    public function getTreeObject() {
+        return $this->git->getObject($this->tree);
+    }
+    
     public function getParent() {
         return $this->parent;
+    }
+    
+    public function getParentObject() {
+        return $this->git->getObject($this->parent);
     }
     
     public function getMessage() {

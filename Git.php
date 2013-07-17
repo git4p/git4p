@@ -32,13 +32,13 @@ class Git {
     }
 
 
-    public function getHead($branch = 'master') {
-        $sha = self::getHeadSha($this->dir);
+    public function getHeadObject($branch = 'master') {
+        $sha = self::getHead($this->dir);
         
         return $this->getObject($sha);
     }
 
-    private static function getHeadSha($repodir) {
+    private static function getHead($repodir) {
         $headref = false;
         $filename = $repodir.self::HEAD;
         
@@ -76,7 +76,7 @@ class Git {
             sscanf($header, "%s %d", $type, $object_size);
 
             $class = "Git".ucfirst($type);
-            $obj   = new $class($sha, $data);
+            $obj   = new $class($sha, $data, $this);
         
             return $obj;
         }

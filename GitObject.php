@@ -7,13 +7,18 @@
  */
 class GitObject {
 
+    // Back reference to main Git repository object
+    protected $git      = false;
+    
     /* Generic variables for Git objects */
     protected $sha      = false;
     protected $rawdata  = false;
     protected $location = false;
     protected $filename = false;
     
-    public function __construct($sha, $data) {
+    public function __construct($sha, $data, $git) {
+        $this->git = $git;
+        
         $this->sha      = $sha;
         $this->location = substr($sha, 0, 2);
         $this->filename = substr($sha, 2);

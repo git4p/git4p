@@ -7,7 +7,7 @@ include "git4php.php";
 $dir = '/home/klm23563/projects/git4php/testrepo/';
 $git = new Git($dir);
 
-$head = $git->getHead();
+$head = $git->getHeadObject();
 
 echo "HEAD COMMIT OBJ\n";
 echo $head."\n";
