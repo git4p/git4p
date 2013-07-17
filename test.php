@@ -8,7 +8,13 @@ $dir = '/home/klm23563/projects/git4php/testrepo/';
 $git = new Git($dir);
 
 $head = $git->getHead();
-echo $head;
+
+echo "HEAD COMMIT OBJ\n";
+echo $head."\n";
+
+echo "HEAD TREE OBJ\n";
+$tree = $git->getObject($head->getTree());
+echo $tree."\n";
 
 /*
 $sha = Git::getHeadSha($repodir);

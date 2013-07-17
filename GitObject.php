@@ -7,6 +7,7 @@
  */
 class GitObject {
 
+    /* Generic variables for Git objects */
     protected $sha      = false;
     protected $rawdata  = false;
     protected $location = false;
@@ -46,7 +47,7 @@ class GitObject {
         
         foreach($vars as $key => $var) {
             if ($key == 'rawdata') continue;
-            $ret .= "$key: $var\n";
+            $ret .= sprintf("%s: %s\n", $key, print_r($var, true));
         }
         
         $ret .= "\n";

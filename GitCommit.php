@@ -24,7 +24,7 @@ class GitCommit extends GitObject {
     public function getTree() {
         return $this->tree;
     }
-
+    
     public function getParent() {
         return $this->parent;
     }
