@@ -1,10 +1,39 @@
 <?php
 
 class Git {
-    const   BASEDIR     = '.git/';
-    const   HEAD        = '.git/HEAD';
+    const   DIR_BASE     = '.git/';
+    const   DIR_OBJECTS  = '.git/objects/';
+    const   DIR_REFS     = '.git/refs/';
+    const   HEAD         = '.git/HEAD';
     
-    public static function getHeadSha($repodir) {
+    /* Repository instance data */
+    private $dir = false;
+
+    
+    public function __construct($dir) {
+        if (is_string($dir) === false) {
+            throw new Exception("Git repository should be initialized with the absolute path to the repository's directory.");
+        }
+        
+        $this->dir = $dir;
+    }
+    
+    public function getDir() {
+        return $this->dir;
+    }
+    
+    public function __toString() {
+        return $this->dir;
+    }
+
+
+    public function getHead($branch = 'master') {
+        $sha = self::getHeadSha($this->dir);
+        
+        return $this->getObject($sha);
+    }
+
+    private static function getHeadSha($repodir) {
         $headref = false;
         $filename = $repodir.self::HEAD;
         
@@ -13,10 +42,41 @@ class Git {
             $headref = explode(' ', $headref);
         }
         
-        $filename = $repodir.self::BASEDIR.$headref[1];
+        $filename = $repodir.self::DIR_BASE.$headref[1];
         if (file_exists($filename) && is_readable ($filename)) {
             $rootsha = trim(file_get_contents($filename));
             return $rootsha;
+        }
+        
+        return false;
+    }
+        
+    /**
+     * Retrieves a basic GitObject from disk based on given SHA.
+     * 
+     * @todo Add caching?
+     * @todo Add pack support
+     * 
+     * @param type $sha
+     * @return boolean
+     */
+    public function getObject($sha) {
+        $dir = substr($sha, 0, 2);
+        $objectname = substr($sha, 2,38);
+        
+        $path = sprintf('%s/%s/%s/%s', $this->dir, self::DIR_OBJECTS, substr($sha, 0, 2), substr($sha, 2));
+
+        if (file_exists($path) && is_readable ($path)) {
+            list($header, $data) = explode("\0", gzuncompress(file_get_contents($path)), 2);
+            sscanf($header, "%s %d", $type, $object_size);
+
+            $class = "Git".ucfirst($type);
+            $obj   = new $class($sha, $data);
+        
+            return $obj;
+        }
+        else {
+            throw new Exception("Object $sha not found in path $path");
         }
         
         return false;

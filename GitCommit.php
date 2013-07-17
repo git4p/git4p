@@ -14,7 +14,7 @@ class GitCommit extends GitObject {
     protected $description='';
     
     public function readFromDisk($sha) {
-        parent::readFromDisk($sha);
+        //Git::readFromDisk($sha);
         
         $tosplit = $this->content;
         $split = explode("\n", $tosplit);
@@ -68,5 +68,3 @@ class GitCommit extends GitObject {
         return $this->tree;
     }
 }
-
-?>

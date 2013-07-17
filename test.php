@@ -4,7 +4,13 @@
 
 include "git4php.php";
 
-$repodir = '/home/klm23563/projects/git4php/testrepo/';
+$dir = '/home/klm23563/projects/git4php/testrepo/';
+$git = new Git($dir);
+
+$head = $git->getHead();
+echo $head;
+
+/*
 $sha = Git::getHeadSha($repodir);
 $type = GitObject::TYPE_COMMIT;
 
@@ -19,3 +25,5 @@ while ($go->getParent() !== false) {
     $go = new GitCommit($repodir, $go->getParent());
     //echo "Child sha: ".$go->getSha1()."\n";
 }
+ * 
+ */
