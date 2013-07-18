@@ -1,0 +1,11 @@
+Git4P
+=====
+
+"Git4P" stands for "Git for PHP" and is a PHP library that can access a Git repository
+without using external help like the standard git commands.
+
+Status of this library
+----------------------
+
+DEVELOPMENT - this library is in full development and cannot be used in production. Use at
+your opinion.
