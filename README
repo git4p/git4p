@@ -4,6 +4,21 @@ Git4P
 "Git4P" stands for "Git for PHP" and is a PHP library that can access a Git repository
 without using external help like the standard git commands.
 
+Development stages
+------------------
+
+This library will be developed using the following phases or stages:
+
+- Read only support for bare repositories (no pack support)
+- Read only support for bare repositories including pack support
+- Write support for bare repositories (no pack support)
+- Write support for bare repositories including pack support
+
+*Undecided since this would make it a non-server side library*
+
+- Read support (i.e. did something change) for working dirs
+- Write support for working dirs
+
 Status of this library
 ----------------------
 
