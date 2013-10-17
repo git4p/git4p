@@ -20,6 +20,10 @@ class GitCommit extends GitObject {
         
         $this->loadData();
     }
+    
+    public function getType() {
+        return GitObject::TYPE_COMMIT;
+    }
 
     public function getTree() {
         return $this->tree;
@@ -49,7 +53,11 @@ class GitCommit extends GitObject {
         return $this->aEmail;
     }
     
-    public function getAuthorTimestamp() {
+    public function getAuthorTimestamp($asDate=false, $format='Y-m-d H:m') {
+        if ($asDate === true) {
+            return date($format, $this->aTimestamp);
+        }
+        
         return $this->aTimestamp;
     }
     

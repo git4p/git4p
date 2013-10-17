@@ -2,6 +2,8 @@
 
 <?php
 
+date_default_timezone_set('UTC');
+
 include "git4php.php";
 
 $dir = dirname(__FILE__).'/testrepo/';
@@ -10,11 +12,15 @@ $git = new Git($dir);
 $head = $git->getHeadObject();
 
 echo "HEAD COMMIT OBJ\n";
-echo $head."\n";
+//echo $head."\n";
 
-echo "HEAD TREE OBJ\n";
+echo 'Author timestamp for commit: '.$head->getAuthorTimestamp(true)."\n\n";
+
+echo "HEAD TREE OBJ\n\n";
 $tree = $git->getObject($head->getTree());
 echo $tree."\n";
+
+//var_dump($tree);
 
 /*
 $sha = Git::getHeadSha($repodir);
