@@ -1,5 +1,7 @@
 <?php
 
+namespace git4p;
+
 /**
  * Class representing a single Git repository.
  * 
@@ -75,7 +77,7 @@ class Git {
             list($header, $data) = explode("\0", gzuncompress(file_get_contents($path)), 2);
             sscanf($header, "%s %d", $type, $object_size);
 
-            $class = "Git".ucfirst($type);
+            $class = "git4p\Git".ucfirst($type);
             $obj   = new $class($sha, $data, $this);
         
             return $obj;

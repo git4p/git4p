@@ -1,5 +1,7 @@
 <?php
 
+namespace git4p;
+
 class GitCommit extends GitObject {
     
     /* Commit object specific variables */

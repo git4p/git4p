@@ -7,7 +7,7 @@ date_default_timezone_set('UTC');
 include "git4php.php";
 
 $dir = dirname(__FILE__).'/testrepo/';
-$git = new Git($dir);
+$git = new git4p\Git($dir);
 
 $head = $git->getHeadObject();
 

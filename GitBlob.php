@@ -1,5 +1,7 @@
 <?php
 
+namespace git4p;
+
 class GitBlob extends GitObject {
     
     /* Blob object specific variables */

@@ -1,5 +1,7 @@
 <?php
 
+namespace git4p;
+
 class GitTree extends GitObject {
     
     /* Tree object specific variables */
