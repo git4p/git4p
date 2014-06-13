@@ -34,13 +34,13 @@ class Git {
     }
 
 
-    public function getHeadObject($branch = 'master') {
-        $sha = self::getHead($this->dir);
+    public function getHead($branch = 'master') {
+        $sha = self::getHeadSha($this->dir);
 
         return $this->getObject($sha);
     }
 
-    private static function getHead($dir) {
+    private static function getHeadSha($dir) {
         $headref = false;
         
         $path = sprintf('%s/%s', $dir, self::HEAD);

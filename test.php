@@ -9,33 +9,19 @@ include "git4php.php";
 $dir = dirname(__FILE__).'/testrepo/';
 $git = new git4p\Git($dir);
 
-$head = $git->getHeadObject();
+//
+// Test if we can figure out HEAD information
+//
+echo "HEAD tests\n------------------\n\n";
 
-echo "HEAD COMMIT OBJ\n";
-//echo $head."\n";
+echo "MASTER branch HEAD\n------------------------------\n";
+$head = $git->getHead();
+echo 'SHA: '.$head->getSha()."\n";
+echo 'Author: '.$head->getAuthorName()."\n";
+echo 'Tree: '.$head->getTree()."\n\n";
 
-echo 'Author timestamp for commit: '.$head->getAuthorTimestamp(true)."\n\n";
-
-echo "HEAD TREE OBJ\n\n";
-$tree = $git->getObject($head->getTree());
-echo $tree."\n";
-
-//var_dump($tree);
-
-/*
-$sha = Git::getHeadSha($repodir);
-$type = GitObject::TYPE_COMMIT;
-
-$go = new GitCommit($repodir, $sha);
-
-//echo "Root sha: ".$go->getSha1()."\n";
-//echo "Tree sha: ".$go->getTree()."\n";
-$tree = new GitTree($repodir, $go->getTree());
-echo "Tree content: ".$tree->getContent()."\n";
-
-while ($go->getParent() !== false) {
-    $go = new GitCommit($repodir, $go->getParent());
-    //echo "Child sha: ".$go->getSha1()."\n";
-}
- * 
- */
+echo "ALT-BRANCH branch HEAD\n------------------------------\n";
+$head = $git->getHead('alt-branch');
+echo 'SHA: '.$head->getSha()."\n";
+echo 'Author: '.$head->getAuthorName()."\n";
+echo 'Tree: '.$head->getTree()."\n\n";
