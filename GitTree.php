@@ -1,7 +1,21 @@
 <?php
 
-namespace git4p;
+//namespace git4p;
 
+/**
+ * Tree object
+ *
+ * File format:
+ * <code>
+tree [content size]\0
+100644 blob [sha1]  [filename]
+040000 tree [sha1]  [dirname]
+ * </code>
+ *
+ * Other data relevant to the blob is stored in a tree referencing the blob.
+ * 
+ * @see GitTree
+ */
 class GitTree extends GitObject {
     
     /* Tree object specific variables */

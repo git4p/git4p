@@ -1,6 +1,6 @@
 <?php
 
-namespace git4p;
+//namespace git4p;
 
 /**
  * A Git object is stored in a subdirectory that's named for the first two
@@ -22,13 +22,19 @@ abstract class GitObject {
     protected $location = false;
     protected $filename = false;
     
-    public function __construct($sha, $data, $git) {
+    public function __construct($git, $data) {
         $this->git = $git;
-        
+
+/*        
         $this->sha      = $sha;
         $this->location = substr($sha, 0, 2);
         $this->filename = substr($sha, 2);
         $this->rawdata  = $data;
+*/
+    }
+
+    public function setData($data) {
+        $this->rawdata = $data;
     }
 
     public function getSha() {

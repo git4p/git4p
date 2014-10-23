@@ -1,6 +1,6 @@
 <?php
 
-namespace git4p;
+//namespace git4p;
 
 /*
 

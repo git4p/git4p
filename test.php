@@ -4,25 +4,28 @@
 
 include "git4php.php";
 
-$readme = "GIT4P\n=====\n\nThis is a simple test repo for git4p."
+$readme = "GIT4P\n=====\n\nThis is a simple test repo for git4p.";
 $dir = dirname(__FILE__).'/mytestrepo';
 $git = false;
 
 // Create the repo if necessary
 if (file_exists($dir.'/HEAD') === false) {
+    echo "Repo does not exist, creating on disk.\n";
     $git = Git::init($dir);
 }
 else {
+    echo "Repo exists, creating reference object instance.\n";
     $git = new Git($dir);
 }
 
-// Simulate that a README file was commited and pushed to master
-// First create a blob
+echo "Simulate that a README file was commited and pushed to master.\n";
+echo "Create a blob.\n";
 $b = new GitBlob($git, $readme);
+var_dump($b);
 // Then create a tree
-$t = new GitTree($git, array($b));
+//$t = new GitTree($git, array($b));
 // Then create the commit
-$c = new GitCommit
+//$c = new GitCommit
 
 
 

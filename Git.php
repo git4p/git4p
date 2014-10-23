@@ -1,5 +1,7 @@
 <?php
 
+//namespace git4p;
+
 /**
  * Class representing a single Git repository.
  * 
