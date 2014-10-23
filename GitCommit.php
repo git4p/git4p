@@ -1,5 +1,7 @@
 <?php
 
+namespace git4p;
+
 class GitCommit extends GitObject {
     
     /* Commit object specific variables */
@@ -20,6 +22,10 @@ class GitCommit extends GitObject {
         
         $this->loadData();
     }
+    
+    public function getType() {
+        return GitObject::TYPE_COMMIT;
+    }
 
     public function getTree() {
         return $this->tree;
@@ -34,6 +40,10 @@ class GitCommit extends GitObject {
     }
     
     public function getParentObject() {
+        if ($this->parent === false) {
+            return false;
+        }
+        
         return $this->git->getObject($this->parent);
     }
     
@@ -49,7 +59,11 @@ class GitCommit extends GitObject {
         return $this->aEmail;
     }
     
-    public function getAuthorTimestamp() {
+    public function getAuthorTimestamp($asDate=false, $format='D M j G:i:s Y O') {
+        if ($asDate === true) {
+            return date($format, $this->aTimestamp);
+        }
+        
         return $this->aTimestamp;
     }
     
@@ -65,8 +79,12 @@ class GitCommit extends GitObject {
         return $this->aEmail;
     }
     
-    public function getCommitterTimestamp() {
-        return $this->aTimestamp;
+    public function getCommitterTimestamp($asDate=false, $format='D M j G:i:s Y O') {
+        if ($asDate === true) {
+            return date($format, $this->cTimestamp);
+        }
+        
+        return $this->cTimestamp;
     }
     
     public function getCommitterOffset() {
@@ -85,7 +103,7 @@ class GitCommit extends GitObject {
                 $this->message .= $elements[0];
                 continue;
             }
-            
+
             switch($elements[0]) {
                 case 'tree':
                     $this->tree = $elements[1];
@@ -94,10 +112,20 @@ class GitCommit extends GitObject {
                     $this->parent = $elements[1];
                     break;
                 case 'author':
-                    sscanf($elements[1], "%s %s %d %s", $this->aName, $this->aEmail, $this->aTimestamp, $this->aOffset);
+                    preg_match('/^(.+?)\s+<(.+?)>\s+(\d+)\s+([+-]\d{4})$/', $elements[1], $m);
+                    $this->aName = $m[1];
+                    $this->aEmail = $m[2];
+                    $this->aTimestamp = intval($m[3]);
+                    $off = intval($m[4]);
+                    $this->aOffset = intval($off/100) * 3600 + ($off%100) * 60;
                     break;
                 case 'committer':
-                    sscanf($elements[1], "%s %s %d %s", $this->cName, $this->cEmail, $this->cTimestamp, $this->cOffset);
+                    preg_match('/^(.+?)\s+<(.+?)>\s+(\d+)\s+([+-]\d{4})$/', $elements[1], $m);
+                    $this->cName = $m[1];
+                    $this->cEmail = $m[2];
+                    $this->cTimestamp = intval($m[3]);
+                    $off = intval($m[4]);
+                    $this->cOffset = intval($off/100) * 3600 + ($off%100) * 60;
                     break;
                 default:
                     $this->message .= "\n";

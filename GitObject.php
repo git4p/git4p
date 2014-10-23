@@ -1,11 +1,17 @@
 <?php
 
+namespace git4p;
+
 /**
  * A Git object is stored in a subdirectory that's named for the first two
  * characters of the object's SHA1. The object's filename is the remaining
  * 38 characters.
  */
-class GitObject {
+abstract class GitObject {
+
+    const TYPE_COMMIT = 'commit';
+    const TYPE_TREE   = 'tree';
+    const TYPE_BLOB   = 'blob';
 
     // Back reference to main Git repository object
     protected $git      = false;

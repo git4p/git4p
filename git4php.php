@@ -1,5 +1,7 @@
 <?php
 
+namespace git4p;
+
 /*
 
 Git4PHP Library.

@@ -68,22 +68,14 @@ class Git {
         return $result;
     }
     
-    public function __construct($dir) {
+    public function __construct($dir=false) {
         if (is_string($dir) === false) {
             throw new Exception("Git repository should be initialized with the absolute path to the repository's directory.");
         }
         
-        $this->dir = $dir;
+        $this->dir = rtrim($dir, '/');
     }
     
-
-
-
-
-
-
-
-
     public function getDir() {
         return $this->dir;
     }
