@@ -8,16 +8,15 @@
  * @todo Add pack support
  */
 class Git {
-    const   DIR_BASE     = '/';
-    const   DIR_OBJECTS  = '/objects/';
-    const   DIR_REFS     = '/refs/';
-    const   HEAD         = '/HEAD';
+    const   DIR_OBJECTS  = 'objects';
+    const   DIR_REFS     = 'refs';
+    const   FILE_HEAD    = 'HEAD';
     
     /* Repository instance data */
     private $dir = false;
     
     
-    public static function init($dir) {
+    public static function init($dir) {    
         // Test if directory is already a repo
         if (file_exists($dir.'/HEAD') === true) {
             throw new Exception('Unable to initialize repository. Already is a repository.');
@@ -50,14 +49,18 @@ class Git {
         return new Git($dir);
     }
 
-    private static function writeFile($path, $content) {
+    public static function writeFile($path, $content, $compress=false) {
+        if ($compress === true) {
+            $content = gzcompress($content);
+        }
+    
         $result = file_put_contents($path, $content, LOCK_EX);
         if ($result === false) {
             throw new Exception('Unable to write to file '.$path);
         }
     }
 
-    private static function readFile($path, $uncompress=false) {
+    public static function readFile($path, $uncompress=false) {
         $result = file_get_contents($path);
         if ($result === false) {
             throw new Exception('Unable to read from file '.$path);
@@ -78,7 +81,7 @@ class Git {
         $this->dir = rtrim($dir, '/');
     }
     
-    public function getDir() {
+    public function dir() {
         return $this->dir;
     }
     

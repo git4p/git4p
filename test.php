@@ -20,8 +20,10 @@ else {
 
 echo "Simulate that a README file was commited and pushed to master.\n";
 echo "Create a blob.\n";
-$b = new GitBlob($git, $readme);
-var_dump($b);
+$b = new GitBlob($git);
+$b->setData($readme);
+$b->store();
+
 // Then create a tree
 //$t = new GitTree($git, array($b));
 // Then create the commit

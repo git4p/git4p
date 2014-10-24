@@ -21,27 +21,11 @@ class GitBlob extends GitObject {
     protected $name = false;            // filename
     protected $mode = 100644;           // mode for blobs
     
-    public function __construct($git, $data) {
-        parent::__construct($git, $data);
+    public function __construct($git) {
+        parent::__construct($git);
     }
     
-    public function setMode($mode) {
-        $this->mode = $mode;
-    }
-    
-    public function setname($name) {
-        $this->name = $name;
-    }
-    
-    public function getMode() {
-        return $this->mode;
-    }
-    
-    public function getName() {
-        return $this->name;
-    }
-    
-    public function getType() {
+    public function type() {
         return GitObject::TYPE_BLOB;
     }
     

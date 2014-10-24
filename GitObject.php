@@ -19,42 +19,50 @@ abstract class GitObject {
     /* Generic variables for Git objects */
     protected $sha      = false;
     protected $rawdata  = false;
-    protected $location = false;
-    protected $filename = false;
     
-    public function __construct($git, $data) {
+    public function __construct($git) {
         $this->git = $git;
-
-/*        
-        $this->sha      = $sha;
-        $this->location = substr($sha, 0, 2);
-        $this->filename = substr($sha, 2);
-        $this->rawdata  = $data;
-*/
     }
 
     public function setData($data) {
         $this->rawdata = $data;
     }
-
-    public function getSha() {
+    
+    public function sha() {
+        if ($this->sha === false) {
+            $this->sha = sha1($this->header().$this->rawdata);
+        }
+        
         return $this->sha;
     }
     
-    public function getRawData() {
+    public function location() {
+        return substr($this->sha(), 0, 2);
+    }
+    
+    public function filename() {
+        return substr($this->sha(), 2);
+    }
+
+    public function data() {
         return $this->rawdata;
     }
     
-    public function getLocation() {
-        return $this->location;
+    public function header() {
+        return sprintf("%s %d\0", $this->type(), strlen($this->rawdata));
     }
     
-    public function getFilename() {
-        return $this->filename;
-    }
-    
-    public function getHeader($type) {
-        return sprintf("%s %d\0", $type, strlen($this->rawdata));
+    public function store() {
+        $path = sprintf('%s/%s/%s', $this->git->dir(), Git::DIR_OBJECTS, $this->location());
+        
+        if (file_exists($path) === false) {
+            $result = mkdir($path, 0774, true);
+            if ($result === false) {
+                throw new Exception('Unable to create path '.$path);
+            }
+        }
+        
+        Git::writeFile($path.'/'.$this->filename(), $this->header().$this->rawdata, true);
     }
     
     public function __toString() {
