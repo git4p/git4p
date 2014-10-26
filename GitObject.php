@@ -49,7 +49,11 @@ abstract class GitObject {
     }
     
     public function header() {
-        return sprintf("%s %d\0", $this->type(), strlen($this->rawdata));
+        return sprintf("%s %d\0", $this->type(), strlen($this->data()));
+    }
+    
+    public function mode() {
+        return $this->mode;
     }
     
     public function store() {
@@ -62,7 +66,7 @@ abstract class GitObject {
             }
         }
         
-        Git::writeFile($path.'/'.$this->filename(), $this->header().$this->rawdata, true);
+        Git::writeFile($path.'/'.$this->filename(), $this->header().$this->data(), true);
     }
     
     public function __toString() {

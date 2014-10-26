@@ -27,7 +27,21 @@ class GitTree extends GitObject {
         parent::__construct($git);
     }
     
-    public function getType() {
+    public function setData($data) {
+        $this->entries = $data;
+    }
+    
+    public function data() {
+        $data = "\n";
+        
+        foreach ($this->entries as $name => $entry) {
+            $data .= sprintf("%s %s %s\t%s\n", $entry->mode(), $entry->type(), $entry->sha(), $name);
+        }
+        
+        return $data;
+    }
+    
+    public function type() {
         return GitObject::TYPE_TREE;
     }
     
@@ -58,17 +72,6 @@ class GitTree extends GitObject {
     }
     
     public function __toString() {
-        $txt = '';
-        
-        $txt = "Tree sha: $this->sha\n\nFiles and directories:\n\n";
-        
-        foreach ($this->getEntries() as $entry) {
-            $txt .= "".$entry->getType()." ".$entry->getName()."\n";
-            if ($entry->getType() == 'tree') {
-                $txt .= $entry;
-            }
-        }
-        
-        return $txt;
+        return $this->data();
     }
 }

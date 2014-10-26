@@ -2,6 +2,23 @@
 
 //namespace git4p;
 
+/**
+
+Format:
+
+-------------------------------------------
+commit <content size>\0
+tree <full sha1>
+[parent <full sha1>]
+author <name> <<email>> <timestamp> <offset>
+committer <name> <<email>> <timestamp> <offset>
+
+<message>
+-------------------------------------------
+
+note: in case of merge, multiple parent entries
+
+*/
 class GitCommit extends GitObject {
     
     /* Commit object specific variables */
@@ -17,19 +34,63 @@ class GitCommit extends GitObject {
               $cOffset    = false,
               $message    = false;
     
-    public function __construct($sha, $data, $git) {
-        parent::__construct($sha, $data, $git);
-        
-        $this->loadData();
+    public function __construct($git) {
+        parent::__construct($git);
     }
-    
-    public function getType() {
+
+    public function type() {
         return GitObject::TYPE_COMMIT;
     }
 
-    public function getTree() {
+    public function tree() {
         return $this->tree;
     }
+    
+    public function message() {
+        return $this->message;
+    }
+    
+    public function author() {
+        return array('name'=>$this->aName, 'email'=>$this->aEmail, 'timestamp'=>$this->aTimestamp, 'offset'=>$this->aOffset);
+    }
+
+    public function setAuthor($data) {
+        $this->aName      = $data['name'];
+        $this->aEmail     = $data['email'];
+        $this->aTimestamp = $data['timestamp'];
+        $this->aOffset    = $data['offset'];
+    }
+
+    public function setCommiter($data) {
+        $this->cName      = $data['name'];
+        $this->cEmail     = $data['email'];
+        $this->cTimestamp = $data['timestamp'];
+        $this->cOffset    = $data['offset'];
+    }
+    
+    public function setMessage($data) {
+        $this->message = $data;
+    }
+    
+    public function setTree($sha) {
+        $this->tree = $sha;
+    }
+    
+    public function data() {
+        $data = "";
+        
+        $data .= sprintf("tree %s\nauthor %s\ncommitter %s\n\n%s", $this->tree(), implode(' ', $this->author()), implode(' ', $this->author()), $this->message());
+        
+        return $data;
+    }
+    
+    public function __toString() {
+        return "commit ".$this->sha()."\n".$this->data();
+    }
+    
+
+
+
     
     public function getTreeObject() {
         return $this->git->getObject($this->tree);
