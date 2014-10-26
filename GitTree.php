@@ -32,10 +32,10 @@ class GitTree extends GitObject {
     }
     
     public function data() {
-        $data = "\n";
+        $data = "";
         
         foreach ($this->entries as $name => $entry) {
-            $data .= sprintf("%s %s %s\t%s\n", $entry->mode(), $entry->type(), $entry->sha(), $name);
+            $data .= sprintf("%s %s\0%s", $entry->mode(), $entry->type(), $entry->sha());
         }
         
         return $data;

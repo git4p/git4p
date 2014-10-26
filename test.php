@@ -8,6 +8,9 @@ $readme = "GIT4P\n=====\n\nThis is a simple test repo for git4p.\n";
 $dir = dirname(__FILE__).'/mytestrepo';
 $git = false;
 
+//echo Git::readFile(dirname(__FILE__).'/e6d58c1718bd1e7ce419cc4177128b50cf5793', true);
+//exit();
+
 // Create the repo if necessary
 if (file_exists($dir.'/HEAD') === false) {
     echo "Repo does not exist, creating on disk.\n";
