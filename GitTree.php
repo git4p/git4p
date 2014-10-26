@@ -23,26 +23,8 @@ class GitTree extends GitObject {
     protected $name    = false;             // directory name
     protected $mode    = 040000;            // mode for trees
     
-    public function __construct($sha, $data, $git) {
-        parent::__construct($sha, $data, $git);
-        
-        $this->loadData();
-    }
-    
-    public function setMode($mode) {
-        $this->mode = $mode;
-    }
-    
-    public function setname($name) {
-        $this->name = $name;
-    }
-    
-    public function getMode() {
-        return $this->mode;
-    }
-    
-    public function getName() {
-        return $this->name;
+    public function __construct($git) {
+        parent::__construct($git);
     }
     
     public function getType() {

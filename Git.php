@@ -24,7 +24,7 @@ class Git {
     
         // always init as bare repo
         $paths = array(
-            'branches',
+            'branches',             // branches is legacy.. don't support?
             'hooks',
             'info',
             'objects/info',
