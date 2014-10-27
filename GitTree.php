@@ -31,11 +31,16 @@ class GitTree extends GitObject {
         $this->entries = $data;
     }
     
+    protected static function compare(&$a, &$b) {
+        return strcmp($a->name, $b->name);
+    }
+    
     public function data() {
-        $data = "";
+        $data = '';
         
+        //uasort($this->entries, 'GitTree::compare');
         foreach ($this->entries as $name => $entry) {
-            $data .= sprintf("%s %s\0%s", $entry->mode(), $entry->type(), $entry->sha());
+            $data .= sprintf("%s %s\0%s", $entry->mode(), $name, Git::sha2bin($entry->sha()));
         }
         
         return $data;

@@ -30,7 +30,7 @@ abstract class GitObject {
     
     public function sha() {
         if ($this->sha === false) {
-            $this->sha = sha1($this->header().$this->rawdata);
+            $this->sha = sha1($this->header().$this->data());
         }
         
         return $this->sha;

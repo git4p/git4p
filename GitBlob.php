@@ -7,8 +7,7 @@
  *
  * File format:
  * <code>
-blob [content size]\0
-This is your raw content.
+blob <content size>\0<content>
  * </code>
  *
  * Other data relevant to the blob is stored in a tree referencing the blob.

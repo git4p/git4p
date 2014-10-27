@@ -4,14 +4,12 @@
 
 include "git4php.php";
 
+// Test setup
 $readme = "GIT4P\n=====\n\nThis is a simple test repo for git4p.\n";
 $dir = dirname(__FILE__).'/mytestrepo';
 $git = false;
 
-//echo Git::readFile(dirname(__FILE__).'/e6d58c1718bd1e7ce419cc4177128b50cf5793', true);
-//exit();
-
-// Create the repo if necessary
+// Create the repo if necessary or just a reference to existing repo
 if (file_exists($dir.'/HEAD') === false) {
     echo "Repo does not exist, creating on disk.\n";
     $git = Git::init($dir);
@@ -21,19 +19,20 @@ else {
     $git = new Git($dir);
 }
 
+// Create a basic one file initial commit, then simulate a push to the repo
 echo "Simulate that a README file was commited and pushed to master.\n";
 echo "Create a blob.\n";
 $b = new GitBlob($git);
 $b->setData($readme);
 $b->store();
+echo "Created blob ".$b->sha()."\n";
 
 echo "Create a tree.\n";
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
 $t->setData($arr);
 $t->store();
-
-echo "-----\n$t\n-------\n";
+echo "Created tree ".$t->sha()."\n";
 
 echo "Create the commit.\n";
 $c = new GitCommit($git);
@@ -42,10 +41,39 @@ $c->setMessage("Initial commit.");
 $c->setAuthor(array('name'=>'Martijn van der Kleijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'));
 $c->setCommiter(array('name'=>'Martijn van der Kleijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'));
 $c->store();
-echo $c;
+echo "Created commit ".$c->sha()."\n";
 
 // Make sure master head ref exists and points to commit
 Git::writeFile($dir.'/refs/heads/master', ''.$c->sha()."\n");
+
+// Lets create an extra branch called 'develop'
+Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
+
+// Add a commit to develop
+echo "Create a blob.\n";
+$b = new GitBlob($git);
+$b->setData("Altered README.md file!!!\n");
+$b->store();
+echo "Created blob ".$b->sha()."\n";
+
+echo "Create a tree.\n";
+$arr = array('README.md' => $b);
+$t = new GitTree($git);
+$t->setData($arr);
+$t->store();
+echo "Created tree ".$t->sha()."\n";
+
+echo "Create the commit.\n";
+$c = new GitCommit($git);
+$c->setTree($t->sha());
+$c->setMessage("Update readme.");
+$c->setAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
+$c->setCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
+$c->store();
+echo "Created commit ".$c->sha()."\n";
+
+// Update develop branch's pointer
+Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
 
 
 /*

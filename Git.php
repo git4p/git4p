@@ -108,6 +108,10 @@ class Git {
         
         return $rootsha;
     }
+    
+    public static function sha2bin($sha) {
+        return pack('H40', $sha);
+    }
         
     /**
      * Retrieves a basic GitObject from disk based on given SHA.
