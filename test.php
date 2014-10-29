@@ -38,9 +38,10 @@ echo "Create the commit.\n";
 $c = new GitCommit($git);
 $c->setTree($t->sha());
 $c->setMessage("Initial commit.");
-$c->setAuthor(array('name'=>'Martijn van der Kleijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'));
-$c->setCommiter(array('name'=>'Martijn van der Kleijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'));
+$c->addAuthor(array('name'=>'Martijn van der Kleijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'));
+$c->addCommiter(array('name'=>'Martijn van der Kleijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'));
 $c->store();
+$oc = $c;
 echo "Created commit ".$c->sha()."\n";
 
 // Make sure master head ref exists and points to commit
@@ -66,9 +67,10 @@ echo "Created tree ".$t->sha()."\n";
 echo "Create the commit.\n";
 $c = new GitCommit($git);
 $c->setTree($t->sha());
+$c->addParent($oc->sha());
 $c->setMessage("Update readme.");
-$c->setAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
-$c->setCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
+$c->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
+$c->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
 $c->store();
 echo "Created commit ".$c->sha()."\n";
 

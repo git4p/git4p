@@ -23,7 +23,9 @@ class GitCommit extends GitObject {
     
     /* Commit object specific variables */
     protected $tree       = false,
-              $parent     = false,
+              $parents    = array(),
+              $authors    = array(),
+              $committers = array(),
               $aName      = false,
               $aEmail     = false,
               $aTimestamp = false,
@@ -50,22 +52,28 @@ class GitCommit extends GitObject {
         return $this->message;
     }
     
-    public function author() {
-        return array('name'=>$this->aName, 'email'=>$this->aEmail, 'timestamp'=>$this->aTimestamp, 'offset'=>$this->aOffset);
+    public function authors() {
+        return $this->authors;
     }
 
-    public function setAuthor($data) {
-        $this->aName      = $data['name'];
-        $this->aEmail     = $data['email'];
-        $this->aTimestamp = $data['timestamp'];
-        $this->aOffset    = $data['offset'];
+    public function committers() {
+        return $this->committers;
+    }
+    
+    public function parents() {
+        return $this->parents;
+    }
+    
+    public function addParent($data) {
+        $this->parents[] = $data;
     }
 
-    public function setCommiter($data) {
-        $this->cName      = $data['name'];
-        $this->cEmail     = $data['email'];
-        $this->cTimestamp = $data['timestamp'];
-        $this->cOffset    = $data['offset'];
+    public function addAuthor($data) {
+        $this->authors[] = $data;
+    }
+
+    public function addCommiter($data) {
+        $this->committers[] = $data;
     }
     
     public function setMessage($data) {
@@ -79,7 +87,20 @@ class GitCommit extends GitObject {
     public function data() {
         $data = "";
         
-        $data .= sprintf("tree %s\nauthor %s\ncommitter %s\n\n%s", $this->tree(), implode(' ', $this->author()), implode(' ', $this->author()), $this->message());
+        $data .= sprintf("tree %s\n", $this->tree());
+        foreach ($this->parents() as $parent) {
+            $data .= sprintf("parent %s\n", $parent);
+        }
+        
+        foreach ($this->authors() as $author) {
+            $data .= sprintf("author %s\n", implode(' ', $author));
+        }
+        
+        foreach ($this->committers as $committer) {
+            $data .= sprintf("committer %s\n", implode(' ', $committer));
+        }
+        
+        $data .= sprintf("\n%s", $this->message());
         
         return $data;
     }
