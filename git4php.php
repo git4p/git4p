@@ -33,3 +33,4 @@ include("GitObject.php");
 include("GitCommit.php");
 include("GitTree.php");
 include("GitBlob.php");
+include("GitTag.php");

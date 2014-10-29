@@ -77,6 +77,17 @@ echo "Created commit ".$c->sha()."\n";
 // Update develop branch's pointer
 Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
 
+echo "Create a tag for the first commit\n";
+$tag = new GitTag($git);
+$tag->setObject($oc);
+$tag->setTag("v0.1");
+$tag->setTagger(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
+$tag->setMessage("Tagging the first commit...");
+$tag->store();
+echo "Created tag ".$tag->sha()."\n";
+
+// Create the tag's reference
+Git::writeFile($dir.'/refs/tags/'.$tag->tag(), ''.$tag->sha()."\n");
 
 /*
 $head = $git->getHeadObject();

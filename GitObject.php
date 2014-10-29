@@ -12,6 +12,7 @@ abstract class GitObject {
     const TYPE_COMMIT = 'commit';
     const TYPE_TREE   = 'tree';
     const TYPE_BLOB   = 'blob';
+    const TYPE_TAG    = 'tag';
 
     // Back reference to main Git repository object
     protected $git      = false;
