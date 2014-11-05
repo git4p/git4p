@@ -1,5 +1,4 @@
 #!/usr/bin/php
-
 <?php
 
 include "git4php.php";
@@ -21,20 +20,17 @@ else {
 
 // Create a basic one file initial commit, then simulate a push to the repo
 echo "Simulate that a README file was commited and pushed to master.\n";
-echo "Create a blob.\n";
 $b = new GitBlob($git);
 $b->setData($readme);
 $b->store();
 echo "Created blob ".$b->sha()."\n";
 
-echo "Create a tree.\n";
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
 $t->setData($arr);
 $t->store();
 echo "Created tree ".$t->sha()."\n";
 
-echo "Create the commit.\n";
 $c = new GitCommit($git);
 $c->setTree($t->sha());
 $c->setMessage("Initial commit.");
@@ -44,6 +40,8 @@ $c->store();
 $oc = $c;
 echo "Created commit ".$c->sha()."\n";
 
+$firstcommit = $c->sha();
+
 // Make sure master head ref exists and points to commit
 Git::writeFile($dir.'/refs/heads/master', ''.$c->sha()."\n");
 
@@ -51,20 +49,17 @@ Git::writeFile($dir.'/refs/heads/master', ''.$c->sha()."\n");
 Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
 
 // Add a commit to develop
-echo "Create a blob.\n";
 $b = new GitBlob($git);
 $b->setData("Altered README.md file!!!\n");
 $b->store();
 echo "Created blob ".$b->sha()."\n";
 
-echo "Create a tree.\n";
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
 $t->setData($arr);
 $t->store();
 echo "Created tree ".$t->sha()."\n";
 
-echo "Create the commit.\n";
 $c = new GitCommit($git);
 $c->setTree($t->sha());
 $c->addParent($oc->sha());
@@ -74,10 +69,44 @@ $c->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 't
 $c->store();
 echo "Created commit ".$c->sha()."\n";
 
+$p = $c->sha();
+
+// Add a commit to develop
+$b = new GitBlob($git);
+$b->setData("Altered README.MD file!\n");
+$b->store();
+echo "Created blob ".$b->sha()."\n";
+
+$arr = array('README.md' => $b);
+$t = new GitTree($git);
+$t->setData($arr);
+$t->store();
+echo "Created tree ".$t->sha()."\n";
+
+$c = new GitCommit($git);
+$c->setTree($t->sha());
+$c->addParent($p);
+$c->setMessage("Correct readme.");
+$c->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374158776', 'offset'=>'+0200'));
+$c->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374158776', 'offset'=>'+0200'));
+$c->store();
+echo "Created commit ".$c->sha()."\n";
+
+$sc = new GitCommit($git);
+$sc->setTree($t->sha());
+$sc->addParent($firstcommit);
+$sc->addParent($c->sha());
+$sc->setMessage("Merge develop into master.");
+$sc->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1384158776', 'offset'=>'+0200'));
+$sc->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1384158776', 'offset'=>'+0200'));
+$sc->store();
+echo "Created commit ".$sc->sha()."\n";
+
+
 // Update develop branch's pointer
 Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
+Git::writeFile($dir.'/refs/heads/master', ''.$sc->sha()."\n");
 
-echo "Create a tag for the first commit\n";
 $tag = new GitTag($git);
 $tag->setObject($oc);
 $tag->setTag("v0.1");
@@ -88,31 +117,3 @@ echo "Created tag ".$tag->sha()."\n";
 
 // Create the tag's reference
 Git::writeFile($dir.'/refs/tags/'.$tag->tag(), ''.$tag->sha()."\n");
-
-/*
-$head = $git->getHeadObject();
-
-echo "HEAD COMMIT OBJ\n";
-echo $head."\n";
-
-echo "HEAD TREE OBJ\n";
-$tree = $git->getObject($head->getTree());
-echo $tree."\n";
-
-/*
-$sha = Git::getHeadSha($repodir);
-$type = GitObject::TYPE_COMMIT;
-
-$go = new GitCommit($repodir, $sha);
-
-//echo "Root sha: ".$go->getSha1()."\n";
-//echo "Tree sha: ".$go->getTree()."\n";
-$tree = new GitTree($repodir, $go->getTree());
-echo "Tree content: ".$tree->getContent()."\n";
-
-while ($go->getParent() !== false) {
-    $go = new GitCommit($repodir, $go->getParent());
-    //echo "Child sha: ".$go->getSha1()."\n";
-}
- * 
- */

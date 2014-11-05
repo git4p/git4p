@@ -81,6 +81,12 @@ class Git {
         $this->dir = rtrim($dir, '/');
     }
     
+    public function getTip($branch = 'master') {
+        $headref = trim(self::readFile($this->dir().'/'.self::FILE_HEAD));
+        $ref = explode(' ', $headref);
+        return trim(self::readFile($this->dir().'/'.$ref[1]));
+    }
+    
     public function dir() {
         return $this->dir;
     }
