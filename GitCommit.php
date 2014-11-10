@@ -67,11 +67,11 @@ class GitCommit extends GitObject {
         }
         
         foreach ($this->authors() as $author) {
-            $data .= sprintf("author %s\n", implode(' ', $author));
+            $data .= sprintf("author %s\n", $author);
         }
         
         foreach ($this->committers as $committer) {
-            $data .= sprintf("committer %s\n", implode(' ', $committer));
+            $data .= sprintf("committer %s\n", $committer);
         }
         
         $data .= sprintf("\n%s", $this->message());

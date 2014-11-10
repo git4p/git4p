@@ -45,7 +45,7 @@ class GitTag extends GitObject {
         $data = '';
         
         $data .= sprintf("object %s\ntype %s\ntag %s\ntagger %s\n\n%s",
-                         $this->objSha(), $this->objType(), $this->tag(), implode(' ', $this->tagger()), $this->message());
+                         $this->objSha(), $this->objType(), $this->tag(), $this->tagger(), $this->message());
         
         return $data;
     }
