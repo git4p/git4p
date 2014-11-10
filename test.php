@@ -21,8 +21,8 @@ else {
 // Create a basic one file initial commit, then simulate a push to the repo
 echo "Simulate that a README file was commited and pushed to master.\n";
 $b = new GitBlob($git);
-$b->setData($readme);
-$b->store();
+$b->setData($readme)
+  ->store();
 echo "Created $b\n";
 
 $arr = array('README.md' => $b);
@@ -50,8 +50,8 @@ Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
 
 // Add a commit to develop
 $b = new GitBlob($git);
-$b->setData("Altered README.md file!!!\n");
-$b->store();
+$b->setData("Altered README.md file!!!\n")
+  ->store();
 echo "Created $b\n";
 
 $arr = array('README.md' => $b);
@@ -73,8 +73,8 @@ $p = $c->sha();
 
 // Add a commit to develop
 $b = new GitBlob($git);
-$b->setData("Altered README.MD file!\n");
-$b->store();
+$b->setData("Altered README.MD file!\n")
+  ->store();
 echo "Created $b\n";
 
 $arr = array('README.md' => $b);
