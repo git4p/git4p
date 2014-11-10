@@ -15,6 +15,12 @@ class GitTag extends GitObject {
         parent::__construct($git);
     }
     
+    public function __toString() {
+        return $this->shortSha().' - '.$this->tag();
+    }
+    
+    
+    // GETTERS
     public function tag() {
         return $this->tag;
     }
@@ -30,33 +36,16 @@ class GitTag extends GitObject {
     public function objSha() {
         return $this->objsha;
     }
-       
+    
     public function objType() {
         return $this->objtype;
-    }
-    
-    public function setObject($obj) {
-        $this->objtype = $obj->type();
-        $this->objsha  = $obj->sha();
-    }
-    
-    public function setTag($data) {
-        $this->tag = $data;
-    }
-    
-    public function setTagger($data) {
-        $this->tagger = $data;
-    }
-    
-    public function setMessage($data) {
-        $this->message = $data;
     }
     
     public function data() {
         $data = '';
         
         $data .= sprintf("object %s\ntype %s\ntag %s\ntagger %s\n\n%s",
-                         $this->objSha(), $this->objType(), $this->tag(), implode(' ', $this->Tagger()), $this->message());
+                         $this->objSha(), $this->objType(), $this->tag(), implode(' ', $this->tagger()), $this->message());
         
         return $data;
     }
@@ -65,4 +54,30 @@ class GitTag extends GitObject {
         return GitObject::TYPE_TAG;
     }
     
+    
+    // SETTERS
+    public function setObject($obj) {
+        $this->objtype = $obj->type();
+        $this->objsha  = $obj->sha();
+        
+        return $this;
+    }
+    
+    public function setTag($data) {
+        $this->tag = $data;
+        
+        return $this;
+    }
+    
+    public function setTagger($data) {
+        $this->tagger = $data;
+        
+        return $this;
+    }
+    
+    public function setMessage($data) {
+        $this->message = $data;
+        
+        return $this;
+    }
 }

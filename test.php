@@ -27,8 +27,8 @@ echo "Created blob ".$b->sha()."\n";
 
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
-$t->setData($arr);
-$t->store();
+$t->setData($arr)
+  ->store();
 echo "Created tree ".$t->sha()."\n";
 
 $c = new GitCommit($git);
@@ -56,8 +56,8 @@ echo "Created blob ".$b->sha()."\n";
 
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
-$t->setData($arr);
-$t->store();
+$t->setData($arr)
+  ->store();
 echo "Created tree ".$t->sha()."\n";
 
 $c = new GitCommit($git);
@@ -79,8 +79,8 @@ echo "Created blob   ".$b->shortSha()."\n";
 
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
-$t->setData($arr);
-$t->store();
+$t->setData($arr)
+  ->store();
 echo "Created tree   ".$t->shortSha()."\n";
 
 $c = new GitCommit($git);
@@ -108,11 +108,11 @@ Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
 Git::writeFile($dir.'/refs/heads/master', ''.$sc->sha()."\n");
 
 $tag = new GitTag($git);
-$tag->setObject($oc);
-$tag->setTag("v0.1");
-$tag->setTagger(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
-$tag->setMessage("Tagging the first commit...");
-$tag->store();
+$tag->setObject($oc)
+    ->setTag("v0.1")
+    ->setTagger(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'))
+    ->setMessage("Tagging the first commit...")
+    ->store();
 echo "Created tag    ".$tag->shortSha()."\n";
 
 // Create the tag's reference
