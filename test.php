@@ -61,10 +61,10 @@ $oc = $c;
 $firstcommit = $c->sha();
 
 // Make sure master head ref exists and points to commit
-Git::writeFile($dir.'/refs/heads/master', ''.$c->sha()."\n");
+$git->updateBranch('master', $c->sha());
 
 // Lets create an extra branch called 'develop'
-Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
+$git->updateBranch('develop', $c->sha());
 
 // Add a commit to develop
 $b = new GitBlob($git);
@@ -131,8 +131,8 @@ echo "Created $sc\n";
 
 
 // Update develop branch's pointer
-Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
-Git::writeFile($dir.'/refs/heads/master', ''.$sc->sha()."\n");
+$git->updateBranch('develop', $c->sha());
+$git->updateBranch('master', $sc->sha());
 
 $tagger->setTimestamp('1374058776');
 

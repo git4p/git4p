@@ -81,6 +81,10 @@ class Git {
         $this->dir = rtrim($dir, '/');
     }
     
+    public function updateBranch($branch, $sha) {
+        Git::writeFile($this->dir.'/refs/heads/'.$branch, ''.$sha."\n");
+    }
+    
     public function getTip($branch = 'master') {
         $headref = trim(self::readFile($this->dir().'/'.self::FILE_HEAD));
         $ref = explode(' ', $headref);
