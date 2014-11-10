@@ -17,7 +17,7 @@ abstract class GitObject {
     // Back reference to main Git repository object
     protected $git      = false;
     
-    /* Generic variables for Git objects */
+    // Generic variables for Git objects
     protected $sha      = false;
     protected $rawdata  = false;
     
@@ -29,10 +29,8 @@ abstract class GitObject {
         return sprintf("%6s %s", $this->type(), $this->shortSha());
     }
 
-    public function setData($data) {
-        $this->rawdata = $data;
-    }
-    
+
+    // GETTERS
     public function sha() {
         if ($this->sha === false) {
             $this->sha = sha1($this->header().$this->data());
@@ -63,8 +61,18 @@ abstract class GitObject {
     
     public function mode() {
         return $this->mode;
+    }    
+    
+    
+    // SETTERS
+    public function setData($data) {
+        $this->rawdata = $data;
+        
+        return $this;
     }
     
+    
+    // STORAGE
     public function store() {
         $path = sprintf('%s/%s/%s', $this->git->dir(), Git::DIR_OBJECTS, $this->location());
         
