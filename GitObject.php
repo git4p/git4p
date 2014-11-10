@@ -24,6 +24,10 @@ abstract class GitObject {
     public function __construct($git) {
         $this->git = $git;
     }
+    
+    public function __toString() {
+        return sprintf("%6s %s", $this->type(), $this->shortSha());
+    }
 
     public function setData($data) {
         $this->rawdata = $data;
@@ -74,6 +78,7 @@ abstract class GitObject {
         Git::writeFile($path.'/'.$this->filename(), $this->header().$this->data(), true);
     }
     
+    /*
     public function __toString() {
         $ret = '';
         $vars = get_object_vars($this);
@@ -86,5 +91,5 @@ abstract class GitObject {
         
         $ret .= "\n";
         return $ret;
-    }
+    }*/
 }

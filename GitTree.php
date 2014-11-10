@@ -27,16 +27,16 @@ class GitTree extends GitObject {
         parent::__construct($git);
     }
     
-    public function __toString() {
-        return $this->data();
-    }
-    
     protected static function compare(&$a, &$b) {
         return strcmp($a->name, $b->name);
     }
     
     
     // GETTERS
+    public function type() {
+        return GitObject::TYPE_TREE;
+    }
+    
     public function data() {
         $data = '';
         
@@ -46,10 +46,6 @@ class GitTree extends GitObject {
         }
         
         return $data;
-    }
-    
-    public function type() {
-        return GitObject::TYPE_TREE;
     }
     
     public function entries() {

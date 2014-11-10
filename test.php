@@ -23,13 +23,13 @@ echo "Simulate that a README file was commited and pushed to master.\n";
 $b = new GitBlob($git);
 $b->setData($readme);
 $b->store();
-echo "Created blob ".$b->sha()."\n";
+echo "Created $b\n";
 
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
 $t->setData($arr)
   ->store();
-echo "Created tree ".$t->sha()."\n";
+echo "Created $t\n";
 
 $c = new GitCommit($git);
 $c->setTree($t->sha())
@@ -37,7 +37,7 @@ $c->setTree($t->sha())
   ->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'))
   ->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'))
   ->store();
-echo "Created commit ".$c->sha()."\n";
+echo "Created $c\n";
 
 $oc = $c;
 $firstcommit = $c->sha();
@@ -52,13 +52,13 @@ Git::writeFile($dir.'/refs/heads/develop', ''.$c->sha()."\n");
 $b = new GitBlob($git);
 $b->setData("Altered README.md file!!!\n");
 $b->store();
-echo "Created blob ".$b->sha()."\n";
+echo "Created $b\n";
 
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
 $t->setData($arr)
   ->store();
-echo "Created tree ".$t->sha()."\n";
+echo "Created $t\n";
 
 $c = new GitCommit($git);
 $c->setTree($t->sha())
@@ -67,7 +67,7 @@ $c->setTree($t->sha())
   ->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'))
   ->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'))
   ->store();
-echo "Created commit ".$c->sha()."\n";
+echo "Created $c\n";
 
 $p = $c->sha();
 
@@ -75,13 +75,13 @@ $p = $c->sha();
 $b = new GitBlob($git);
 $b->setData("Altered README.MD file!\n");
 $b->store();
-echo "Created blob   ".$b->shortSha()."\n";
+echo "Created $b\n";
 
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
 $t->setData($arr)
   ->store();
-echo "Created tree   ".$t->shortSha()."\n";
+echo "Created $t\n";
 
 $c = new GitCommit($git);
 $c->setTree($t->sha())
@@ -90,7 +90,7 @@ $c->setTree($t->sha())
   ->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374158776', 'offset'=>'+0200'))
   ->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374158776', 'offset'=>'+0200'))
   ->store();
-echo "Created commit ".$c->shortSha()."\n";
+echo "Created $c\n";
 
 $sc = new GitCommit($git);
 $sc->setTree($t->sha())
@@ -100,7 +100,7 @@ $sc->setTree($t->sha())
    ->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1384158776', 'offset'=>'+0200'))
    ->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1384158776', 'offset'=>'+0200'))
    ->store();
-echo "Created commit ".$sc->shortSha()."\n";
+echo "Created $sc\n";
 
 
 // Update develop branch's pointer
@@ -113,7 +113,7 @@ $tag->setObject($oc)
     ->setTagger(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'))
     ->setMessage("Tagging the first commit...")
     ->store();
-echo "Created tag    ".$tag->shortSha()."\n";
+echo "Created $tag\n";
 
 // Create the tag's reference
 Git::writeFile($dir.'/refs/tags/'.$tag->tag(), ''.$tag->sha()."\n");

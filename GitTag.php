@@ -14,13 +14,13 @@ class GitTag extends GitObject {
     public function __construct($git) {
         parent::__construct($git);
     }
-    
-    public function __toString() {
-        return $this->shortSha().' - '.$this->tag();
-    }
-    
+        
     
     // GETTERS
+    public function type() {
+        return GitObject::TYPE_TAG;
+    }
+    
     public function tag() {
         return $this->tag;
     }
@@ -48,10 +48,6 @@ class GitTag extends GitObject {
                          $this->objSha(), $this->objType(), $this->tag(), implode(' ', $this->tagger()), $this->message());
         
         return $data;
-    }
-    
-    public function type() {
-        return GitObject::TYPE_TAG;
     }
     
     

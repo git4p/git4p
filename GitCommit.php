@@ -32,10 +32,6 @@ class GitCommit extends GitObject {
         parent::__construct($git);
     }
     
-    public function __toString() {
-        return "commit ".$this->sha()."\n".$this->data();
-    }
-    
     
     // Getters
     public function type() {
