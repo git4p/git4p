@@ -37,6 +37,10 @@ abstract class GitObject {
         return $this->sha;
     }
     
+    public function shortSha() {
+        return substr($this->sha(), 0, 8);
+    }
+    
     public function location() {
         return substr($this->sha(), 0, 2);
     }

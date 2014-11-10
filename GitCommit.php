@@ -26,20 +26,18 @@ class GitCommit extends GitObject {
               $parents    = array(),
               $authors    = array(),
               $committers = array(),
-              $aName      = false,
-              $aEmail     = false,
-              $aTimestamp = false,
-              $aOffset    = false,
-              $cName      = false,
-              $cEmail     = false,
-              $cTimestamp = false,
-              $cOffset    = false,
               $message    = false;
     
     public function __construct($git) {
         parent::__construct($git);
     }
-
+    
+    public function __toString() {
+        return "commit ".$this->sha()."\n".$this->data();
+    }
+    
+    
+    // Getters
     public function type() {
         return GitObject::TYPE_COMMIT;
     }
@@ -64,26 +62,6 @@ class GitCommit extends GitObject {
         return $this->parents;
     }
     
-    public function addParent($data) {
-        $this->parents[] = $data;
-    }
-
-    public function addAuthor($data) {
-        $this->authors[] = $data;
-    }
-
-    public function addCommiter($data) {
-        $this->committers[] = $data;
-    }
-    
-    public function setMessage($data) {
-        $this->message = $data;
-    }
-    
-    public function setTree($sha) {
-        $this->tree = $sha;
-    }
-    
     public function data() {
         $data = "";
         
@@ -105,42 +83,41 @@ class GitCommit extends GitObject {
         return $data;
     }
     
-    public function __toString() {
-        return "commit ".$this->sha()."\n".$this->data();
-    }
     
-
-
-
     
-    public function getTreeObject() {
-        return $this->git->getObject($this->tree);
-    }
-    
-    public function getParent() {
-        return $this->parent;
-    }
-    
-    public function getParentObject() {
-        if ($this->parent === false) {
-            return false;
-        }
+    // Setters
+    public function setTree($sha) {
+        $this->tree = $sha;
         
-        return $this->git->getObject($this->parent);
+        return $this;
     }
     
-    public function getMessage() {
-        return $this->message;
+    public function setMessage($data) {
+        $this->message = $data;
+        
+        return $this;
+    }
+    
+    public function addParent($data) {
+        $this->parents[] = $data;
+        
+        return $this;
     }
 
-    public function getAuthorName() {
-        return $this->aName;
+    public function addAuthor($data) {
+        $this->authors[] = $data;
+        
+        return $this;
     }
-    
-    public function getAuthorEmail() {
-        return $this->aEmail;
+
+    public function addCommiter($data) {
+        $this->committers[] = $data;
+        
+        return $this;
     }
+
     
+    // TODO REMOVE??
     public function getAuthorTimestamp($asDate=false, $format='D M j G:i:s Y O') {
         if ($asDate === true) {
             return date($format, $this->aTimestamp);
@@ -149,30 +126,8 @@ class GitCommit extends GitObject {
         return $this->aTimestamp;
     }
     
-    public function getAuthorOffset() {
-        return $this->aOffset;
-    }
     
-    public function getCommitterName() {
-        return $this->aName;
-    }
-    
-    public function getCommitterEmail() {
-        return $this->aEmail;
-    }
-    
-    public function getCommitterTimestamp($asDate=false, $format='D M j G:i:s Y O') {
-        if ($asDate === true) {
-            return date($format, $this->cTimestamp);
-        }
-        
-        return $this->cTimestamp;
-    }
-    
-    public function getCommitterOffset() {
-        return $this->aOffset;
-    }
-
+    // Loader function
     private function loadData() {
         $lines = explode("\n", $this->rawdata);
         

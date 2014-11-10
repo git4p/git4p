@@ -32,14 +32,14 @@ $t->store();
 echo "Created tree ".$t->sha()."\n";
 
 $c = new GitCommit($git);
-$c->setTree($t->sha());
-$c->setMessage("Initial commit.");
-$c->addAuthor(array('name'=>'Martijn van der Kleijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'));
-$c->addCommiter(array('name'=>'Martijn van der Kleijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'));
-$c->store();
-$oc = $c;
+$c->setTree($t->sha())
+  ->setMessage("Initial commit.")
+  ->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'))
+  ->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058686', 'offset'=>'+0200'))
+  ->store();
 echo "Created commit ".$c->sha()."\n";
 
+$oc = $c;
 $firstcommit = $c->sha();
 
 // Make sure master head ref exists and points to commit
@@ -61,12 +61,12 @@ $t->store();
 echo "Created tree ".$t->sha()."\n";
 
 $c = new GitCommit($git);
-$c->setTree($t->sha());
-$c->addParent($oc->sha());
-$c->setMessage("Update readme.");
-$c->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
-$c->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
-$c->store();
+$c->setTree($t->sha())
+  ->addParent($oc->sha())
+  ->setMessage("Update readme.")
+  ->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'))
+  ->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'))
+  ->store();
 echo "Created commit ".$c->sha()."\n";
 
 $p = $c->sha();
@@ -75,32 +75,32 @@ $p = $c->sha();
 $b = new GitBlob($git);
 $b->setData("Altered README.MD file!\n");
 $b->store();
-echo "Created blob ".$b->sha()."\n";
+echo "Created blob   ".$b->shortSha()."\n";
 
 $arr = array('README.md' => $b);
 $t = new GitTree($git);
 $t->setData($arr);
 $t->store();
-echo "Created tree ".$t->sha()."\n";
+echo "Created tree   ".$t->shortSha()."\n";
 
 $c = new GitCommit($git);
-$c->setTree($t->sha());
-$c->addParent($p);
-$c->setMessage("Correct readme.");
-$c->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374158776', 'offset'=>'+0200'));
-$c->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374158776', 'offset'=>'+0200'));
-$c->store();
-echo "Created commit ".$c->sha()."\n";
+$c->setTree($t->sha())
+  ->addParent($p)
+  ->setMessage("Correct readme.")
+  ->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374158776', 'offset'=>'+0200'))
+  ->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374158776', 'offset'=>'+0200'))
+  ->store();
+echo "Created commit ".$c->shortSha()."\n";
 
 $sc = new GitCommit($git);
-$sc->setTree($t->sha());
-$sc->addParent($firstcommit);
-$sc->addParent($c->sha());
-$sc->setMessage("Merge develop into master.");
-$sc->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1384158776', 'offset'=>'+0200'));
-$sc->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1384158776', 'offset'=>'+0200'));
-$sc->store();
-echo "Created commit ".$sc->sha()."\n";
+$sc->setTree($t->sha())
+   ->addParent($firstcommit)
+   ->addParent($c->sha())
+   ->setMessage("Merge develop into master.")
+   ->addAuthor(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1384158776', 'offset'=>'+0200'))
+   ->addCommiter(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1384158776', 'offset'=>'+0200'))
+   ->store();
+echo "Created commit ".$sc->shortSha()."\n";
 
 
 // Update develop branch's pointer
@@ -113,7 +113,7 @@ $tag->setTag("v0.1");
 $tag->setTagger(array('name'=>'Martijn', 'email'=>'<martijn.niji@gmail.com>', 'timestamp'=>'1374058776', 'offset'=>'+0200'));
 $tag->setMessage("Tagging the first commit...");
 $tag->store();
-echo "Created tag ".$tag->sha()."\n";
+echo "Created tag    ".$tag->shortSha()."\n";
 
 // Create the tag's reference
 Git::writeFile($dir.'/refs/tags/'.$tag->tag(), ''.$tag->sha()."\n");
