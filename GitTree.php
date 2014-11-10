@@ -27,19 +27,21 @@ class GitTree extends GitObject {
         parent::__construct($git);
     }
     
-    public function setData($data) {
-        $this->entries = $data;
+    public function __toString() {
+        return $this->data();
     }
     
     protected static function compare(&$a, &$b) {
         return strcmp($a->name, $b->name);
     }
     
+    
+    // GETTERS
     public function data() {
         $data = '';
         
-        //uasort($this->entries, 'GitTree::compare');
-        foreach ($this->entries as $name => $entry) {
+        uasort($this->entries(), 'GitTree::compare');
+        foreach ($this->entries() as $name => $entry) {
             $data .= sprintf("%s %s\0%s", $entry->mode(), $name, Git::sha2bin($entry->sha()));
         }
         
@@ -50,10 +52,26 @@ class GitTree extends GitObject {
         return GitObject::TYPE_TREE;
     }
     
-    public function getEntries() {
+    public function entries() {
         return $this->entries;
     }
+        
     
+    // SETTERS
+    public function setName($name) {
+        $this->name = $name;
+        
+        return $this;
+    }
+    
+    public function setData($data) {
+        $this->entries = $data;
+        
+        return $this;
+    }
+    
+    
+    // DATA LOADER
     public function loadData() {        
         $start = 0;
         while ($start < strlen($this->rawdata)) {
@@ -74,9 +92,5 @@ class GitTree extends GitObject {
           $this->entries[$sha] = $obj;
           $start = $pos+21;
         }
-    }
-    
-    public function __toString() {
-        return $this->data();
     }
 }
