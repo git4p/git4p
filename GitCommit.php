@@ -124,47 +124,66 @@ class GitCommit extends GitObject {
     
     
     // Loader function
-    private function loadData() {
-        $lines = explode("\n", $this->rawdata);
+    public function load($sha) {
+    
+        $this->tree       = false;
+        $this->parents    = array();
+        $this->authors    = array();
+        $this->committers = array();
+        $this->message    = false;
+    
+        $lines = explode("\n", $this->loadRawData($sha));
+        
+        $message = "";
         
         foreach($lines as $line) {
             $line = trim($line);
             $elements = explode(' ', $line, 2);
             
             if (count($elements) == 1) {
-                $this->message .= "\n";
-                $this->message .= $elements[0];
+                $message .= "\n";
+                $message .= $elements[0];
                 continue;
             }
 
             switch($elements[0]) {
                 case 'tree':
-                    $this->tree = $elements[1];
+                    $this->setTree($elements[1]);
                     break;
                 case 'parent':
-                    $this->parent = $elements[1];
+                    $this->addParent($elements[1]);
                     break;
                 case 'author':
                     preg_match('/^(.+?)\s+<(.+?)>\s+(\d+)\s+([+-]\d{4})$/', $elements[1], $m);
-                    $this->aName = $m[1];
-                    $this->aEmail = $m[2];
-                    $this->aTimestamp = intval($m[3]);
+                    $user = new GitUser();
                     $off = intval($m[4]);
-                    $this->aOffset = intval($off/100) * 3600 + ($off%100) * 60;
+                    $user->setName($m[1])
+                         ->setEmail($m[2])
+                         ->setTimestamp(intval($m[3]))
+                         ->setOffset($m[4]);
+                         //->setOffset(intval($off/100) * 3600 + ($off%100) * 60);
+                    $this->addAuthor($user);
                     break;
                 case 'committer':
                     preg_match('/^(.+?)\s+<(.+?)>\s+(\d+)\s+([+-]\d{4})$/', $elements[1], $m);
-                    $this->cName = $m[1];
-                    $this->cEmail = $m[2];
-                    $this->cTimestamp = intval($m[3]);
+                    $user = new GitUser();
                     $off = intval($m[4]);
-                    $this->cOffset = intval($off/100) * 3600 + ($off%100) * 60;
+                    $user->setName($m[1])
+                         ->setEmail($m[2])
+                         ->setTimestamp(intval($m[3]))
+                         ->setOffset($m[4]);
+                         //->setOffset(intval($off/100) * 3600 + ($off%100) * 60);
+                    $this->addCommiter($user);
                     break;
                 default:
-                    $this->message .= "\n";
-                    $this->message .= $elements[0].' '.$elements[1];
+                    $message .= "\n";
+                    $message .= $elements[0].' '.$elements[1];
                     break;
             }
         }
+        
+        $this->setMessage($message);
+        
+        return $this;
     }
 }

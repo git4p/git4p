@@ -86,6 +86,14 @@ abstract class GitObject {
         Git::writeFile($path.'/'.$this->filename(), $this->header().$this->data(), true);
     }
     
+    public function loadRawData($sha) {
+        $path = sprintf('%s/%s/%s/%s', $this->git->dir(), Git::DIR_OBJECTS, substr($sha, 0, 2), substr($sha, 2));
+        $data = Git::readFile($path, true);
+        $data = explode("\0", $data, 2);
+        
+        return $data[1];
+    }
+    
     /*
     public function __toString() {
         $ret = '';
