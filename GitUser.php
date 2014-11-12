@@ -1,5 +1,7 @@
 <?php
 
+namespace org\git4p;
+
 class GitUser {
 
     protected $name      = false;

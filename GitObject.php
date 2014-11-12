@@ -1,6 +1,6 @@
 <?php
 
-//namespace git4p;
+namespace org\git4p;
 
 /**
  * A Git object is stored in a subdirectory that's named for the first two

@@ -3,6 +3,13 @@
 
 include "git4php.php";
 
+use org\git4p\Git;
+use org\git4p\GitUser;
+use org\git4p\GitBlob;
+use org\git4p\GitTree;
+use org\git4p\GitCommit;
+use org\git4p\GitTag;
+
 // Test setup
 $readme = "GIT4P\n=====\n\nThis is a simple test repo for git4p.\n";
 $dir = dirname(__FILE__).'/mytestrepo';

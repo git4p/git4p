@@ -1,6 +1,6 @@
 <?php
 
-//namespace git4p;
+namespace org\git4p;
 
 /**
  * Tree object
@@ -40,7 +40,7 @@ class GitTree extends GitObject {
     public function data() {
         $data = '';
         
-        uasort($this->entries(), 'GitTree::compare');
+        uasort($this->entries(), 'self::compare');
         foreach ($this->entries() as $name => $entry) {
             $data .= sprintf("%s %s\0%s", $entry->mode(), $name, Git::sha2bin($entry->sha()));
         }

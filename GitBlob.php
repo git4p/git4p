@@ -1,6 +1,6 @@
 <?php
 
-//namespace git4p;
+namespace org\git4p;
 
 /**
  * Blob object
