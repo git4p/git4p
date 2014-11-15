@@ -141,7 +141,6 @@ class GitCommit extends GitObject {
             $elements = explode(' ', $line, 2);
             
             if (count($elements) == 1) {
-                $message .= "\n";
                 $message .= $elements[0];
                 continue;
             }
@@ -161,7 +160,6 @@ class GitCommit extends GitObject {
                          ->setEmail($m[2])
                          ->setTimestamp(intval($m[3]))
                          ->setOffset($m[4]);
-                         //->setOffset(intval($off/100) * 3600 + ($off%100) * 60);
                     $this->addAuthor($user);
                     break;
                 case 'committer':
@@ -172,11 +170,9 @@ class GitCommit extends GitObject {
                          ->setEmail($m[2])
                          ->setTimestamp(intval($m[3]))
                          ->setOffset($m[4]);
-                         //->setOffset(intval($off/100) * 3600 + ($off%100) * 60);
                     $this->addCommiter($user);
                     break;
                 default:
-                    $message .= "\n";
                     $message .= $elements[0].' '.$elements[1];
                     break;
             }
