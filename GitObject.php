@@ -61,7 +61,11 @@ abstract class GitObject {
     
     public function mode() {
         return $this->mode;
-    }    
+    }
+    
+    public function git() {
+        return $this->git;
+    }
     
     
     // SETTERS

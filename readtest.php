@@ -18,10 +18,24 @@ $git = new Git($dir);
 
 $tip = $git->getTip('master');
 
-echo "Tip of master: $tip\n";
-
+echo "Commit tree for master branch\n";
+echo "-----------------------------\n\n";
 $c = new GitCommit($git);
 $c = $c->load($tip);
-echo "commit ".$c->sha()."\n";
+showLog($c);
+
+function showLog($c) {
+    echo "* ".$c->shortSha()."\n";
+    
+    if (count($c->parents()) >= 1) {
+        echo "| \n";
+        $p = $c->parents();   
+        $c2 = new GitCommit ($c->git());
+        $c2 = $c2->load($p[0]);
+        showLog($c2);
+    }
+}
+
+
 
 //var_dump($c);
