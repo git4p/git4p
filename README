@@ -9,9 +9,9 @@ Development stages
 
 This library will be developed using the following phases or stages:
 
+- Write support for bare repositories (no pack support)
 - Read only support for bare repositories (no pack support)
 - Read only support for bare repositories including pack support
-- Write support for bare repositories (no pack support)
 - Write support for bare repositories including pack support
 
 *Undecided since this would make it a non-server side library*
@@ -22,5 +22,12 @@ This library will be developed using the following phases or stages:
 Status of this library
 ----------------------
 
-DEVELOPMENT - this library is in full development and cannot be used in production. Use at
+DEVELOPMENT - this library is in full development and should probably not be used in production. Use at
 your own risk.
+
+It can now:
+
+- create a bare repo
+- create git commit, blob and tree objects on disk
+- create tags and branches
+- read individual objects
