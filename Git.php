@@ -80,9 +80,21 @@ class Git {
         
         $this->dir = rtrim($dir, '/');
     }
+
+    /**
+     *
+     * Valid types: head, tag
+     */
+    public function updateRef($type, $name, $sha) {
+        Git::writeFile($this->dir.'/refs/'.$type.'s/'.$name, ''.$sha."\n");
+    }
     
     public function updateBranch($branch, $sha) {
-        Git::writeFile($this->dir.'/refs/heads/'.$branch, ''.$sha."\n");
+        self::updateRef('head', $branch, $sha);
+    }
+    
+    public function updateTag($tagname, $sha) {
+        self::updateRef('tag', $tagname, $sha);
     }
     
     public function getTip($branch = 'master') {
