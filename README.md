@@ -46,3 +46,11 @@ It can now:
 - create tags (simple and object) and branches
 - read individual commit objects
 
+Some TODOs
+----------
+
+- Add proper unit tests
+- Improve examples in readme
+- Add proper phpdoc blocks
+- Add proper autoloading (PSR-4)
+- Add support for logging? (PSR-3)
