@@ -1,6 +1,13 @@
 #!/usr/bin/php
 <?php
 
+/*
+ * This file is part of the Git4P library.
+ *
+ * Copyright (c) 2015 Martijn van der Kleijn <martijn.niji@gmail.com>
+ * Licensed under the MIT license <http://opensource.org/licenses/MIT>
+ */
+
 include "git4php.php";
 
 use org\git4p\Git;
