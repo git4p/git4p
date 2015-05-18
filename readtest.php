@@ -8,7 +8,7 @@
  * Licensed under the MIT license <http://opensource.org/licenses/MIT>
  */
 
-include "git4php.php";
+include "src/git4p.php";
 
 use org\git4p\Git;
 use org\git4p\GitUser;
