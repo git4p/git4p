@@ -1,0 +1,19 @@
+{
+    "name": "git4p/git4p",
+    "description": "A native PHP git library",
+    "type": "library",
+    "require": {
+        "php": "^5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martijn",
+            "email": "martijn.niji@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
