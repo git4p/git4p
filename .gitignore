@@ -3,5 +3,6 @@ mytestrepo
 nbproject
 
 *~
+*.phar
 
 /vendor/
