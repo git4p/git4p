@@ -1,6 +1,7 @@
 {
     "name": "git4p/git4p",
     "description": "A native PHP git library",
+    "keywords": ["native", "php", "git", "repository"],
     "type": "library",
     "require": {
         "php": "^5.4"
