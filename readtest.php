@@ -8,14 +8,16 @@
  * Licensed under the MIT license <http://opensource.org/licenses/MIT>
  */
 
+ /* QUICK TEST/EXAMPLE FILE */
+
 include "src/git4p.php";
 
-use org\git4p\Git;
-use org\git4p\GitUser;
-use org\git4p\GitBlob;
-use org\git4p\GitTree;
-use org\git4p\GitCommit;
-use org\git4p\GitTag;
+use Git4p\Git;
+use Git4p\GitUser;
+use Git4p\GitBlob;
+use Git4p\GitTree;
+use Git4p\GitCommit;
+use Git4p\GitTag;
 
 // Test setup
 $dir = dirname(__FILE__).'/mytestrepo';
@@ -33,10 +35,10 @@ showLog($c);
 
 function showLog($c) {
     echo "* ".$c->shortSha()."\n";
-    
+
     if (count($c->parents()) >= 1) {
         echo "| \n";
-        $p = $c->parents();   
+        $p = $c->parents();
         $c2 = new GitCommit ($c->git());
         $c2 = $c2->load($p[0]);
         showLog($c2);

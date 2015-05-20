@@ -7,7 +7,7 @@
  * Licensed under the MIT license <http://opensource.org/licenses/MIT>
  */
 
-namespace org\git4p;
+namespace Git4p;
 
 /**
  * Tree object
@@ -20,62 +20,62 @@ tree [content size]\0
  * </code>
  *
  * Other data relevant to the blob is stored in a tree referencing the blob.
- * 
+ *
  * @see GitTree
  */
 class GitTree extends GitObject {
-    
+
     /* Tree object specific variables */
     protected $entries = array();
     protected $name    = false;             // directory name
     protected $mode    = 040000;            // mode for trees
-    
+
     public function __construct($git) {
         parent::__construct($git);
     }
-    
+
     protected static function compare(&$a, &$b) {
         return strcmp($a->name, $b->name);
     }
-    
-    
+
+
     // GETTERS
     public function type() {
         return GitObject::TYPE_TREE;
     }
-    
+
     public function data() {
         $data = '';
-        
+
         uasort($this->entries(), 'self::compare');
         foreach ($this->entries() as $name => $entry) {
             $data .= sprintf("%s %s\0%s", $entry->mode(), $name, Git::sha2bin($entry->sha()));
         }
-        
+
         return $data;
     }
-    
+
     public function entries() {
         return $this->entries;
     }
-        
-    
+
+
     // SETTERS
     public function setName($name) {
         $this->name = $name;
-        
+
         return $this;
     }
-    
+
     public function setData($data) {
         $this->entries = $data;
-        
+
         return $this;
     }
-    
-    
+
+
     // DATA LOADER
-    public function loadData() {        
+    public function loadData() {
         $start = 0;
         while ($start < strlen($this->rawdata)) {
           $pos = strpos($this->rawdata, "\0", $start);
@@ -90,7 +90,7 @@ class GitTree extends GitObject {
           $obj = $this->git->getObject($sha);
           $obj->setMode($mode);
           $obj->setName($name);
-          
+
           // @todo replace by actual objects
           $this->entries[$sha] = $obj;
           $start = $pos+21;
