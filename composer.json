@@ -16,5 +16,8 @@
             "email": "martijn.niji@gmail.com"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {"git4p\\": "src/"}
+    }
 }
