@@ -18,6 +18,6 @@
     ],
     "minimum-stability": "stable",
     "autoload": {
-        "psr-4": {"git4p\\": "src/"}
+        "psr-4": {"Git4p\\": "src/"}
     }
 }

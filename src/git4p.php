@@ -7,7 +7,7 @@
  * Licensed under the MIT license <http://opensource.org/licenses/MIT>
  */
 
-namespace org\git4p;
+namespace Git4p;
 
 /*
 

@@ -7,7 +7,7 @@
  * Licensed under the MIT license <http://opensource.org/licenses/MIT>
  */
 
-namespace org\git4p;
+namespace Git4p;
 
 /**
 
@@ -27,19 +27,19 @@ note: in case of merge, multiple parent entries
 
 */
 class GitCommit extends GitObject {
-    
+
     /* Commit object specific variables */
     protected $tree       = false,
               $parents    = array(),
               $authors    = array(),
               $committers = array(),
               $message    = false;
-    
+
     public function __construct($git) {
         parent::__construct($git);
     }
-    
-    
+
+
     // Getters
     public function type() {
         return GitObject::TYPE_COMMIT;
@@ -48,11 +48,11 @@ class GitCommit extends GitObject {
     public function tree() {
         return $this->tree;
     }
-    
+
     public function message() {
         return $this->message;
     }
-    
+
     public function authors() {
         return $this->authors;
     }
@@ -60,93 +60,93 @@ class GitCommit extends GitObject {
     public function committers() {
         return $this->committers;
     }
-    
+
     public function parents() {
         return $this->parents;
     }
-    
+
     public function data() {
         $data = "";
-        
+
         $data .= sprintf("tree %s\n", $this->tree());
         foreach ($this->parents() as $parent) {
             $data .= sprintf("parent %s\n", $parent);
         }
-        
+
         foreach ($this->authors() as $author) {
             $data .= sprintf("author %s\n", $author);
         }
-        
+
         foreach ($this->committers as $committer) {
             $data .= sprintf("committer %s\n", $committer);
         }
-        
+
         $data .= sprintf("\n%s", $this->message());
-        
+
         return $data;
     }
-    
-    
-    
+
+
+
     // Setters
     public function setTree($sha) {
         $this->tree = $sha;
-        
+
         return $this;
     }
-    
+
     public function setMessage($data) {
         $this->message = $data;
-        
+
         return $this;
     }
-    
+
     public function addParent($data) {
         $this->parents[] = $data;
-        
+
         return $this;
     }
 
     public function addAuthor($data) {
         $this->authors[] = $data;
-        
+
         return $this;
     }
 
     public function addCommiter($data) {
         $this->committers[] = $data;
-        
+
         return $this;
     }
 
-    
+
     // TODO REMOVE??
     public function getAuthorTimestamp($asDate=false, $format='D M j G:i:s Y O') {
         if ($asDate === true) {
             return date($format, $this->aTimestamp);
         }
-        
+
         return $this->aTimestamp;
     }
-    
-    
+
+
     // Loader function
     public function load($sha) {
-    
+
         $this->tree       = false;
         $this->parents    = array();
         $this->authors    = array();
         $this->committers = array();
         $this->message    = false;
-    
+
         $lines = explode("\n", $this->loadRawData($sha));
-        
+
         $message = "";
-        
+
         foreach($lines as $line) {
             $line = trim($line);
             $elements = explode(' ', $line, 2);
-            
+
             if (count($elements) == 1) {
                 $message .= $elements[0];
                 continue;
@@ -184,9 +184,9 @@ class GitCommit extends GitObject {
                     break;
             }
         }
-        
+
         $this->setMessage($message);
-        
+
         return $this;
     }
 }
