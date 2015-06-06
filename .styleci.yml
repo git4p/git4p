@@ -1,5 +1,12 @@
 preset: psr2
 
+enabled:
+  - unused_use
+  - include
+  - self_accessor
+  - single_quote
+  - short_array_syntax
+  - ordered_use
+
 disabled:
   - braces
-  - elseif
