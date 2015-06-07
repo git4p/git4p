@@ -24,30 +24,11 @@ This overly simplistic example creates a new bare repository and inside it, an
 orphaned blob object. In other words an object that's not pointed to by any
 tree object, etc.
 
-Development stages
-------------------
+Note
+----
 
-This library is being developed using the following rough phases or stages:
-
-- Write support for bare repositories (no pack support)
-- Read only support for bare repositories (no pack support)
-- Read only support for bare repositories including pack support
-- Write support for bare repositories including pack support
-
-*Undecided since this would make it a non-server side library*
-
-- Read support (i.e. did something change) for working dirs
-- Write support for working dirs
-
-Status of this library
-----------------------
-
-It can now:
-
-- create a bare repo
-- create git commit, blob and tree objects on disk
-- create tags (simple and object) and branches
-- read individual commit objects
+This library currently has no pack support. Not for actual packs nor for packed
+refs. Support is currently being worked on however.
 
 Some TODOs
 ----------
