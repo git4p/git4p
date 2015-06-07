@@ -1,4 +1,5 @@
 [![StyleCI](https://styleci.io/repos/35836750/shield)](https://styleci.io/repos/35836750)
+[![Code Climate](https://codeclimate.com/github/git4p/git4p/badges/gpa.svg)](https://codeclimate.com/github/git4p/git4p)
 
 Git4P
 =====
