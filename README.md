@@ -1,3 +1,5 @@
+[![StyleCI](https://styleci.io/repos/35836750/shield)](https://styleci.io/repos/35836750)
+
 Git4P
 =====
 
