@@ -7,8 +7,19 @@ Git4P
 "Git4P" stands for "Git for PHP" and is a native PHP Git library that can access
 a Git repository without using external help like the standard git commands.
 
-Simple example
---------------
+Examples
+--------
+
+### Create a new bar repository
+
+```php
+Git::init('/tmp/mytestrepo');
+```
+
+### Add a simple blob
+
+In this example the blob is 'orphaned' which means it is unreachable through any
+commits.
 
 ```php
 $git = Git::init('/tmp/mytestrepo');
@@ -20,9 +31,40 @@ $blob->setData($readme)
      ->store();
 ```
 
-This overly simplistic example creates a new bare repository and inside it, an
-orphaned blob object. In other words an object that's not pointed to by any
-tree object, etc.
+### Full basic repository with a single commit
+
+We programmatically create a blob (file), a tree (directory) that points to it
+and then a commit pointing to the tree. Finally we make sure the `master` branch
+points to this commit.
+
+```php
+$git = Git::init('/tmp/mytestrepo');
+
+$readme = "GIT4P\n=====\n\nThis is a simple test repo for git4p.\n";
+$user = new GitUser();
+$user->setName('Some User')
+     ->setEmail('some.user@example.com')
+     ->setTimestamp('1374058686')
+     ->setOffset('+0200');
+
+$b = new GitBlob($git);
+$b->setData($readme)
+  ->store();
+
+$arr = ['README.md' => $b];
+$t = new GitTree($git);
+$t->setData($arr)
+  ->store();
+
+$c = new GitCommit($git);
+$c->setTree($t->sha())
+  ->setMessage('Initial commit.')
+  ->addAuthor($user)
+  ->addCommiter($user)
+  ->store();
+
+$git->updateBranch('master', $c->sha());
+```
 
 Note
 ----
@@ -36,7 +78,7 @@ Some TODOs
 - Add support for packed-refs
 - Add pack support
 - Add proper unit tests
-- Improve examples in readme
+- ~~Add some basic examples in readme~~
 - Add proper phpdoc blocks
 - ~~Add proper styling (PSR-2, without braces, with other extra measures)~~
 - ~~Add proper autoloading (PSR-4)~~
