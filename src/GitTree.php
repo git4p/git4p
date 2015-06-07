@@ -14,9 +14,9 @@ namespace Git4p;
  *
  * File format:
  * <code>
-tree [content size]\0
-100644 blob [sha1]  [filename]
-040000 tree [sha1]  [dirname]
+ * tree [content size]\0
+ * 100644 blob [sha1]  [filename]
+ * 040000 tree [sha1]  [dirname]
  * </code>
  *
  * Other data relevant to the blob is stored in a tree referencing the blob.
@@ -38,7 +38,6 @@ class GitTree extends GitObject {
         return strcmp($a->name, $b->name);
     }
 
-
     // GETTERS
     public function type() {
         return GitObject::TYPE_TREE;
@@ -59,7 +58,6 @@ class GitTree extends GitObject {
         return $this->entries;
     }
 
-
     // SETTERS
     public function setName($name) {
         $this->name = $name;
@@ -72,7 +70,6 @@ class GitTree extends GitObject {
 
         return $this;
     }
-
 
     // DATA LOADER
     public function loadData() {

@@ -36,7 +36,6 @@ abstract class GitObject {
         return sprintf('%6s %s', $this->type(), $this->shortSha());
     }
 
-
     // GETTERS
     public function sha() {
         if ($this->sha === false) {
@@ -74,14 +73,12 @@ abstract class GitObject {
         return $this->git;
     }
 
-
     // SETTERS
     public function setData($data) {
         $this->rawdata = $data;
 
         return $this;
     }
-
 
     // STORAGE
     public function store() {
@@ -105,18 +102,4 @@ abstract class GitObject {
         return $data[1];
     }
 
-    /*
-    public function __toString() {
-        $ret = '';
-        $vars = get_object_vars($this);
-        ksort($vars);
-
-        foreach($vars as $key => $var) {
-            if ($key == 'rawdata') continue;
-            $ret .= sprintf("%s: %s\n", $key, print_r($var, true));
-        }
-
-        $ret .= "\n";
-        return $ret;
-    }*/
 }

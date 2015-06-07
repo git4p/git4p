@@ -22,7 +22,6 @@ class Git {
     /* Repository instance data */
     private $dir = false;
 
-
     public static function init($dir) {
         // Test if directory is already a repo
         if (file_exists($dir.'/HEAD') === true) {
@@ -116,26 +115,6 @@ class Git {
 
     public function __toString() {
         return $this->dir;
-    }
-
-
-    public function getHeadObject($branch = 'master') {
-        $sha = self::getHead($this->dir);
-
-        return $this->getObject($sha);
-    }
-
-    private static function getHead($repodir) {
-        $headref = false;
-        $filename = $repodir.self::HEAD;
-
-        $headref = trim(self::readFile($filename));
-        $headref = explode(' ', $headref);
-
-        $filename = $repodir.self::DIR_BASE.$headref[1];
-        $rootsha = trim(self::readFile($filename));
-
-        return $rootsha;
     }
 
     public static function sha2bin($sha) {

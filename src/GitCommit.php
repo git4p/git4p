@@ -9,23 +9,22 @@
 
 namespace Git4p;
 
-/**
-
-Format:
-
--------------------------------------------
-commit <content size>\0
-tree <full sha1>
-[parent <full sha1>]
-author <name> <<email>> <timestamp> <offset>
-committer <name> <<email>> <timestamp> <offset>
-
-<message>
--------------------------------------------
-
-note: in case of merge, multiple parent entries
-
-*/
+/*
+ * Format:
+ *
+ * -------------------------------------------
+ * commit <content size>\0
+ * tree <full sha1>
+ * [parent <full sha1>]
+ * author <name> <<email>> <timestamp> <offset>
+ * committer <name> <<email>> <timestamp> <offset>
+ *
+ * <message>
+ * -------------------------------------------
+ *
+ * note: in case of merge, multiple parent entries
+ *
+ */
 class GitCommit extends GitObject {
 
     /* Commit object specific variables */
@@ -38,7 +37,6 @@ class GitCommit extends GitObject {
     public function __construct($git) {
         parent::__construct($git);
     }
-
 
     // Getters
     public function type() {
@@ -86,8 +84,6 @@ class GitCommit extends GitObject {
         return $data;
     }
 
-
-
     // Setters
     public function setTree($sha) {
         $this->tree = $sha;
@@ -119,16 +115,14 @@ class GitCommit extends GitObject {
         return $this;
     }
 
-
-    // TODO REMOVE??
-    public function getAuthorTimestamp($asDate=false, $format='D M j G:i:s Y O') {
-        if ($asDate === true) {
-            return date($format, $this->aTimestamp);
-        }
-
-        return $this->aTimestamp;
-    }
-
+    // // TODO REMOVE??
+    // public function getAuthorTimestamp($asDate=false, $format='D M j G:i:s Y O') {
+    //     if ($asDate === true) {
+    //         return date($format, $this->aTimestamp);
+    //     }
+    //
+    //     return $this->aTimestamp;
+    // }
 
     // Loader function
     public function load($sha) {

@@ -22,7 +22,6 @@ class GitTag extends GitObject {
         parent::__construct($git);
     }
 
-
     // GETTERS
     public function type() {
         return GitObject::TYPE_TAG;
@@ -56,7 +55,6 @@ class GitTag extends GitObject {
 
         return $data;
     }
-
 
     // SETTERS
     public function setObject($obj) {

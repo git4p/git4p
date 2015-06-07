@@ -23,7 +23,6 @@ class GitUser {
         return sprintf('%s <%s> %s %s', $this->name, $this->email, $this->timestamp, $this->offset);
     }
 
-
     // Getters
     public function name() {
         return $this->name;
