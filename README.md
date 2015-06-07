@@ -52,8 +52,11 @@ It can now:
 Some TODOs
 ----------
 
+- Add support for packed-refs
+- Add pack support
 - Add proper unit tests
 - Improve examples in readme
 - Add proper phpdoc blocks
+- ~~Add proper styling (PSR-2, without braces, with other extra measures)~~
 - ~~Add proper autoloading (PSR-4)~~
 - Add support for logging? (PSR-3)
