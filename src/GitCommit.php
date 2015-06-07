@@ -30,9 +30,9 @@ class GitCommit extends GitObject {
 
     /* Commit object specific variables */
     protected $tree       = false,
-              $parents    = array(),
-              $authors    = array(),
-              $committers = array(),
+              $parents    = [],
+              $authors    = [],
+              $committers = [],
               $message    = false;
 
     public function __construct($git) {
@@ -66,7 +66,7 @@ class GitCommit extends GitObject {
     }
 
     public function data() {
-        $data = "";
+        $data = '';
 
         $data .= sprintf("tree %s\n", $this->tree());
         foreach ($this->parents() as $parent) {
@@ -134,14 +134,14 @@ class GitCommit extends GitObject {
     public function load($sha) {
 
         $this->tree       = false;
-        $this->parents    = array();
-        $this->authors    = array();
-        $this->committers = array();
+        $this->parents    = [];
+        $this->authors    = [];
+        $this->committers = [];
         $this->message    = false;
 
         $lines = explode("\n", $this->loadRawData($sha));
 
-        $message = "";
+        $message = '';
 
         foreach($lines as $line) {
             $line = trim($line);

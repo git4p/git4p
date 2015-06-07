@@ -10,14 +10,14 @@
 
  /* QUICK TEST/EXAMPLE FILE */
 
-include "src/git4p.php";
+include 'src/git4p.php';
 
 use Git4p\Git;
-use Git4p\GitUser;
 use Git4p\GitBlob;
-use Git4p\GitTree;
 use Git4p\GitCommit;
 use Git4p\GitTag;
+use Git4p\GitTree;
+use Git4p\GitUser;
 
 // Test setup
 $readme = "GIT4P\n=====\n\nThis is a simple test repo for git4p.\n";
@@ -59,7 +59,7 @@ $b->setData($readme)
   ->store();
 echo "Created $b\n";
 
-$arr = array('README.md' => $b);
+$arr = ['README.md' => $b];
 $t = new GitTree($git);
 $t->setData($arr)
   ->store();
@@ -67,7 +67,7 @@ echo "Created $t\n";
 
 $c = new GitCommit($git);
 $c->setTree($t->sha())
-  ->setMessage("Initial commit.")
+  ->setMessage('Initial commit.')
   ->addAuthor($author)
   ->addCommiter($committer)
   ->store();
@@ -88,7 +88,7 @@ $b->setData("Altered README.md file!!!\n")
   ->store();
 echo "Created $b\n";
 
-$arr = array('README.md' => $b);
+$arr = ['README.md' => $b];
 $t = new GitTree($git);
 $t->setData($arr)
   ->store();
@@ -100,7 +100,7 @@ $committer->setTimestamp('1374058776');
 $c = new GitCommit($git);
 $c->setTree($t->sha())
   ->addParent($oc->sha())
-  ->setMessage("Update readme.")
+  ->setMessage('Update readme.')
   ->addAuthor($author)
   ->addCommiter($committer)
   ->store();
@@ -114,7 +114,7 @@ $b->setData("Altered README.MD file!\n")
   ->store();
 echo "Created $b\n";
 
-$arr = array('README.md' => $b);
+$arr = ['README.md' => $b];
 $t = new GitTree($git);
 $t->setData($arr)
   ->store();
@@ -126,7 +126,7 @@ $committer->setTimestamp('1374158776');
 $c = new GitCommit($git);
 $c->setTree($t->sha())
   ->addParent($p)
-  ->setMessage("Correct readme.")
+  ->setMessage('Correct readme.')
   ->addAuthor($author)
   ->addCommiter($committer)
   ->store();
@@ -139,7 +139,7 @@ $sc = new GitCommit($git);
 $sc->setTree($t->sha())
    ->addParent($firstcommit)
    ->addParent($c->sha())
-   ->setMessage("Merge develop into master.")
+   ->setMessage('Merge develop into master.')
    ->addAuthor($author)
    ->addCommiter($committer)
    ->store();
@@ -154,9 +154,9 @@ $tagger->setTimestamp('1374058776');
 
 $tag = new GitTag($git);
 $tag->setObject($oc)
-    ->setTag("v0.1")
+    ->setTag('v0.1')
     ->setTagger($tagger)
-    ->setMessage("Tagging the first commit...")
+    ->setMessage('Tagging the first commit...')
     ->store();
 echo "Created $tag\n";
 

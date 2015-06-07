@@ -33,7 +33,7 @@ abstract class GitObject {
     }
 
     public function __toString() {
-        return sprintf("%6s %s", $this->type(), $this->shortSha());
+        return sprintf('%6s %s', $this->type(), $this->shortSha());
     }
 
 

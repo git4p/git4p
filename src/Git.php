@@ -30,7 +30,7 @@ class Git {
         }
 
         // always init as bare repo
-        $paths = array(
+        $paths = [
             'branches',             // branches is legacy.. don't support?
             'hooks',
             'info',
@@ -38,7 +38,7 @@ class Git {
             'objects/pack',
             'refs/heads',
             'refs/tags'
-        );
+        ];
 
         // Create bare repo dirs
         foreach ($paths as $path) {
@@ -53,7 +53,7 @@ class Git {
         self::writeFile($dir.'/description', "Unnamed repository; edit this file 'description' to name the repository.\n");
         self::writeFile($dir.'/config', "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = true\n");
 
-        return new Git($dir);
+        return new self($dir);
     }
 
     public static function writeFile($path, $content, $compress=false) {
@@ -93,7 +93,7 @@ class Git {
      * Valid types: head, tag
      */
     public function updateRef($type, $name, $sha) {
-        Git::writeFile($this->dir.'/refs/'.$type.'s/'.$name, ''.$sha."\n");
+        self::writeFile($this->dir.'/refs/'.$type.'s/'.$name, ''.$sha."\n");
     }
 
     public function updateBranch($branch, $sha) {
@@ -153,16 +153,16 @@ class Git {
      */
     public function getObject($sha) {
         $dir = substr($sha, 0, 2);
-        $objectname = substr($sha, 2,38);
+        $objectname = substr($sha, 2, 38);
 
         $path = sprintf('%s/%s/%s/%s', $this->dir, self::DIR_OBJECTS, substr($sha, 0, 2), substr($sha, 2));
 
-        $file = Git::readFile($path, true);
+        $file = self::readFile($path, true);
 
         list($header, $data) = explode("\0", $file, 2);
-        sscanf($header, "%s %d", $type, $object_size);
+        sscanf($header, '%s %d', $type, $object_size);
 
-        $class = "Git".ucfirst($type);
+        $class = 'Git'.ucfirst($type);
         $obj   = new $class($sha, $data, $this);
 
         return $obj;

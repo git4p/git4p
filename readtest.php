@@ -10,14 +10,10 @@
 
  /* QUICK TEST/EXAMPLE FILE */
 
-include "src/git4p.php";
+include 'src/git4p.php';
 
 use Git4p\Git;
-use Git4p\GitUser;
-use Git4p\GitBlob;
-use Git4p\GitTree;
 use Git4p\GitCommit;
-use Git4p\GitTag;
 
 // Test setup
 $dir = dirname(__FILE__).'/mytestrepo';
@@ -34,12 +30,12 @@ $c = $c->load($tip);
 showLog($c);
 
 function showLog($c) {
-    echo "* ".$c->shortSha()."\n";
+    echo '* '.$c->shortSha()."\n";
 
     if (count($c->parents()) >= 1) {
         echo "| \n";
         $p = $c->parents();
-        $c2 = new GitCommit ($c->git());
+        $c2 = new GitCommit($c->git());
         $c2 = $c2->load($p[0]);
         showLog($c2);
     }
@@ -48,3 +44,4 @@ function showLog($c) {
 
 
 //var_dump($c);
+

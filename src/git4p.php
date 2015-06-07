@@ -35,10 +35,10 @@ function endsWith($haystack, $needle) {
     return (substr($haystack, -$length) === $needle);
 }
 
-include("Git.php");
-include("GitObject.php");
-include("GitCommit.php");
-include("GitTree.php");
-include("GitBlob.php");
-include("GitTag.php");
-include("GitUser.php");
+include 'Git.php';
+include 'GitObject.php';
+include 'GitCommit.php';
+include 'GitTree.php';
+include 'GitBlob.php';
+include 'GitTag.php';
+include 'GitUser.php';

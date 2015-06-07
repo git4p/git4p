@@ -20,7 +20,7 @@ class GitUser {
     }
 
     public function __toString() {
-        return sprintf("%s <%s> %s %s", $this->name, $this->email, $this->timestamp, $this->offset);
+        return sprintf('%s <%s> %s %s', $this->name, $this->email, $this->timestamp, $this->offset);
     }
 
 

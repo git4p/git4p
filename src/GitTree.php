@@ -26,7 +26,7 @@ tree [content size]\0
 class GitTree extends GitObject {
 
     /* Tree object specific variables */
-    protected $entries = array();
+    protected $entries = [];
     protected $name    = false;             // directory name
     protected $mode    = 040000;            // mode for trees
 
