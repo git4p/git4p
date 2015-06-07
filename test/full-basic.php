@@ -25,7 +25,6 @@ include '../src/git4p.php';
 use Git4p\Git;
 use Git4p\GitBlob;
 use Git4p\GitCommit;
-use Git4p\GitTag;
 use Git4p\GitTree;
 use Git4p\GitUser;
 
