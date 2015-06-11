@@ -21,6 +21,11 @@ branches:
     - develop
     - /^release-.*$/
 
-install:
+before_install:
   - composer selfupdate
+
+install:
   - composer install
+
+after_script:
+  - ./vendor/bin/test-reporter
