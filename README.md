@@ -1,6 +1,6 @@
 [![StyleCI](https://styleci.io/repos/35836750/shield)](https://styleci.io/repos/35836750)
 [![Code Climate](https://codeclimate.com/github/git4p/git4p/badges/gpa.svg)](https://codeclimate.com/github/git4p/git4p)
-[![Build Status](https://drone.io/github.com/git4p/git4p/status.png)](https://drone.io/github.com/git4p/git4p/latest)
+[![Build Status](https://travis-ci.org/git4p/git4p.svg?branch=master)](https://travis-ci.org/git4p/git4p)
 
 Git4P
 =====
