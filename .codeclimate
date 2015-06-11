@@ -3,5 +3,6 @@ languages:
   JavaScript: false
   PHP: true
   Python: false
-# exclude_paths:
-# - "foo/bar.rb"
+exclude_paths:
+  - 'bootstrap.php'
+  - 'tests/*'
