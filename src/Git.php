@@ -9,6 +9,8 @@
 
 namespace Git4p;
 
+use \Exception;
+
 /**
  * Class representing a single Git repository.
  *
