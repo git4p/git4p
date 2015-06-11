@@ -1,3 +1,5 @@
+phpunit.xml
+
 testrepo
 mytestrepo
 nbproject
@@ -5,4 +7,7 @@ nbproject
 *~
 *.phar
 
+composer.lock
+
 /vendor/
+/build/
