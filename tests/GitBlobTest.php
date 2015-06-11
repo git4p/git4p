@@ -1,8 +1,8 @@
 <?php
 
 use Git4p\Git;
-use Git4p\GitObject;
 use Git4p\GitBlob;
+use Git4p\GitObject;
 
 class GitBlobTest extends PHPUnit_Framework_TestCase {
 
