@@ -8,17 +8,17 @@ class GitBlobTest extends PHPUnit_Framework_TestCase {
     protected $git     = false;
     protected $gitblob = false;
 
-    function setup() {
+    public function setup() {
         $this->git     = new Git();
         $this->gitblob = new GitBlob($this->git);
     }
 
-    function teardown() {
+    public function teardown() {
         $this->git     = false;
         $this->gitblob = false;
     }
 
-    function testShouldReturnGitBlobType() {
+    public function testShouldReturnGitBlobType() {
         $obj = new GitBlob();
         assertEquals($obj->type(), GitObject::TYPE_BLOB);
     }
