@@ -1,6 +1,7 @@
-[![StyleCI](https://styleci.io/repos/35836750/shield)](https://styleci.io/repos/35836750)
-[![Code Climate](https://codeclimate.com/github/git4p/git4p/badges/gpa.svg)](https://codeclimate.com/github/git4p/git4p)
 [![Build Status](https://travis-ci.org/git4p/git4p.svg?branch=master)](https://travis-ci.org/git4p/git4p)
+[![Code Climate](https://codeclimate.com/github/git4p/git4p/badges/gpa.svg)](https://codeclimate.com/github/git4p/git4p)
+[![Test Coverage](https://codeclimate.com/github/git4p/git4p/badges/coverage.svg)](https://codeclimate.com/github/git4p/git4p/coverage)
+[![StyleCI](https://styleci.io/repos/35836750/shield)](https://styleci.io/repos/35836750)
 
 Git4P
 =====
