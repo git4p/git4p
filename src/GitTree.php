@@ -43,6 +43,10 @@ class GitTree extends GitObject {
         return GitObject::TYPE_TREE;
     }
 
+    public function name() {
+        return $this->name;
+    }
+
     public function data() {
         $data = '';
 
