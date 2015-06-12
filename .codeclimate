@@ -1,8 +1,5 @@
 languages:
-  Ruby: false
-  JavaScript: false
   PHP: true
-  Python: false
 exclude_paths:
-  - 'bootstrap.php'
-  - 'tests/*'
+- "bootstrap.php"
+- "tests/*.php"
