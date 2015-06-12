@@ -36,4 +36,17 @@ class GitTagTest extends PHPUnit_Framework_TestCase {
         $this->gittag->setMessage('Some sort of message about the tag.');
         $this->assertEquals($this->gittag->message(), 'Some sort of message about the tag.');
     }
+
+    public function testCanHaveUserAsTagger() {
+        $this->gittag->setTagger('Some User');
+        $this->assertEquals($this->gittag->tagger(), 'Some User');
+    }
+
+    public function testShouldHaveObjectSha() {
+        $this->markTestIncomplete();
+    }
+
+    public function testShouldHaveObjectType() {
+        $this->markTestIncomplete();
+    }
 }

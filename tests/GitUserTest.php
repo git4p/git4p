@@ -34,4 +34,8 @@ class GitUserTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($this->gituser->offset(), '+0100');
     }
 
+    public function testShouldBePrintableAsString() {
+        $this->assertEquals($this->gituser->__toString(), 'Some User <some.user@example.com> 1374058686 +0100');
+    }
+
 }
