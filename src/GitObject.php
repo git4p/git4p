@@ -10,12 +10,18 @@
 namespace Git4p;
 
 /**
- * A Git object is stored in a subdirectory that's named for the first two
- * characters of the object's SHA1. The object's filename is the remaining
- * 38 characters.
+ * Abstract class for generic git objects.
+ *
+ * The basic storage format for any object is:
+ * <code>
+ * [type] [content lenght]NUL[data]
+ * </code>
+ *
+ * There are four objects: blob, tree, commit and tag.
  */
 abstract class GitObject {
 
+    // The four Git object types
     const TYPE_COMMIT = 'commit';
     const TYPE_TREE   = 'tree';
     const TYPE_BLOB   = 'blob';
@@ -28,15 +34,26 @@ abstract class GitObject {
     protected $sha      = false;
     protected $rawdata  = false;
 
+    /**
+     * @param   object  $git    Backreference to main Git object.
+     */
     public function __construct($git) {
         $this->git = $git;
     }
 
+    /**
+     * Basic **__toString** implementation that returns:
+     * a string conforming to <code>[type] [short sha1]</code>
+     */
     public function __toString() {
         return sprintf('%6s %s', $this->type(), $this->shortSha());
     }
 
-    // GETTERS
+    /**
+     * Returns full sha1 for an object.
+     *
+     * @return  string  Full sha1 for object.
+     */
     public function sha() {
         if ($this->sha === false) {
             $this->sha = sha1($this->header().$this->data());
@@ -45,22 +62,43 @@ abstract class GitObject {
         return $this->sha;
     }
 
+    /**
+     * Returns short sha1 code.
+     *
+     * @return  string  Short 8 character sha1 for object.
+     */
     public function shortSha() {
         return substr($this->sha(), 0, 8);
     }
 
+    /**
+     * Returns the directory in which the object should be stored.
+     *
+     * @return  string  Two character directory name.
+     */
     public function location() {
         return substr($this->sha(), 0, 2);
     }
 
+    /**
+     * Returns the Git object filename.
+     *
+     * @return  string  Filename based on sha1 of object.
+     */
     public function filename() {
         return substr($this->sha(), 2);
     }
 
+    /**
+     * @todo make private/protected?
+     */
     public function data() {
         return $this->rawdata;
     }
 
+    /**
+     * @todo make private/protected?
+     */
     public function header() {
         return sprintf("%s %d\0", $this->type(), strlen($this->data()));
     }
@@ -69,6 +107,9 @@ abstract class GitObject {
         return $this->mode;
     }
 
+    /**
+     * @todo remove?
+     */
     public function git() {
         return $this->git;
     }
@@ -82,7 +123,11 @@ abstract class GitObject {
         return $this;
     }
 
-    // STORAGE
+    /**
+     * Stores the object on disk.
+     *
+     * @throws  Exception   'Unable to create path [filename]'
+     */
     public function store() {
         $path = sprintf('%s/%s/%s', $this->git->dir(), Git::DIR_OBJECTS, $this->location());
 
@@ -96,6 +141,11 @@ abstract class GitObject {
         Git::writeFile($path.'/'.$this->filename(), $this->header().$this->data(), true);
     }
 
+    /**
+     * Loads an object's data from disk based on the object's sha1.
+     *
+     * @param   string  $sha    Sha1 for object to load.
+     */
     public function loadRawData($sha) {
         $path = sprintf('%s/%s/%s/%s', $this->git->dir(), Git::DIR_OBJECTS, substr($sha, 0, 2), substr($sha, 2));
         $data = Git::readFile($path, true);
