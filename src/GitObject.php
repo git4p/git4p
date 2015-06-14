@@ -73,6 +73,8 @@ abstract class GitObject {
         return $this->git;
     }
 
+    abstract public function type();
+
     // SETTERS
     public function setData($data) {
         $this->rawdata = $data;
