@@ -1,7 +1,6 @@
 <?php
 
 use Git4p\Git;
-use Git4p\GitObject;
 
 class GitObjectTest extends PHPUnit_Framework_TestCase {
 
