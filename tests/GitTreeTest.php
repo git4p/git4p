@@ -29,4 +29,11 @@ class GitTreeTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($this->gittree->name(), 'SomeDirectoryName');
     }
 
+    public function testShouldContainReferencesToFiles() {
+        $data = ['file1', 'file2'];
+
+        $this->gittree->setData($data);
+        $this->assertEquals($this->gittree->entries(), $data);
+    }
+
 }
