@@ -3,3 +3,5 @@ languages:
 exclude_paths:
 - "bootstrap.php"
 - "tests/*.php"
+- "test.php"
+- "readtest.php"
