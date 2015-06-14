@@ -1,6 +1,7 @@
 <?php
 
 use Git4p\Git;
+use Git4p\GitBlob;
 use Git4p\GitObject;
 use Git4p\GitTag;
 
@@ -43,10 +44,22 @@ class GitTagTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testShouldHaveObjectSha() {
-        $this->markTestIncomplete();
+        $blob = new GitBlob($this->git);
+        $blob->setData('Simulate that a README file was commited and pushed to master.')
+             ->store();
+
+        $this->gittag->setObject($blob);
+
+        $this->assertEquals($this->gittag->objSha(), '747e95f8ffd8d29f62135b2f9c9b216f8ade17bd');
     }
 
     public function testShouldHaveObjectType() {
-        $this->markTestIncomplete();
+        $blob = new GitBlob($this->git);
+        $blob->setData('Simulate that a README file was commited and pushed to master.')
+             ->store();
+
+        $this->gittag->setObject($blob);
+
+        $this->assertEquals($this->gittag->objType(), GitObject::TYPE_BLOB);
     }
 }
