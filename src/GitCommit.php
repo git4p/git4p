@@ -138,8 +138,7 @@ class GitCommit extends GitObject {
         $message = '';
 
         foreach($lines as $line) {
-            $line = trim($line);
-            $elements = explode(' ', $line, 2);
+            $elements = explode(' ', trim($line), 2);
 
             if (count($elements) == 1) {
                 $message .= $elements[0];
@@ -156,7 +155,6 @@ class GitCommit extends GitObject {
                 case 'author':
                     preg_match('/^(.+?)\s+<(.+?)>\s+(\d+)\s+([+-]\d{4})$/', $elements[1], $m);
                     $user = new GitUser();
-                    $off = intval($m[4]);
                     $user->setName($m[1])
                          ->setEmail($m[2])
                          ->setTimestamp(intval($m[3]))
@@ -166,7 +164,6 @@ class GitCommit extends GitObject {
                 case 'committer':
                     preg_match('/^(.+?)\s+<(.+?)>\s+(\d+)\s+([+-]\d{4})$/', $elements[1], $m);
                     $user = new GitUser();
-                    $off = intval($m[4]);
                     $user->setName($m[1])
                          ->setEmail($m[2])
                          ->setTimestamp(intval($m[3]))

@@ -82,15 +82,12 @@ class GitTree extends GitObject {
           $pos = strpos($this->rawdata, "\0", $start);
           list($mode, $name) = explode(' ', substr($this->rawdata, $start, $pos-$start), 2);
 
-          $imode = intval($mode, 8);
-          $is_dir = !!($imode & 040000);
-
-          $sha = substr($this->rawdata, $pos+1, 20);
-          $sha = bin2hex($sha);
+          $is_dir = !!(intval($mode, 8) & 040000);
+          $sha = bin2hex(substr($this->rawdata, $pos+1, 20));
 
           $obj = $this->git->getObject($sha);
-          $obj->setMode($mode);
-          $obj->setName($name);
+          $obj->setMode($mode)
+              ->setName($name);
 
           // @todo replace by actual objects
           $this->entries[$sha] = $obj;
