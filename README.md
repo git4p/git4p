@@ -79,7 +79,7 @@ Some TODOs
 
 - Add support for packed-refs
 - Add pack support
-- Add proper unit tests
+- ~~Add basic unit tests~~
 - ~~Add some basic examples in readme~~
 - Add proper phpdoc blocks
 - ~~Add proper styling (PSR-2, without braces, with other extra measures)~~
