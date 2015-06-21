@@ -18,16 +18,24 @@ class GitTest extends PHPUnit_Framework_TestCase {
         $this->git = new Git();
     }
 
-    public function testShouldHaveReferenceToDirectory() {
-        $this->git = new Git('/tmp/some/directory');
+    /**
+     * @expectedException         Exception
+     * @expectedExceptionMessage  Referenced Git repository directory does not exist.
+     */
+    public function testShouldThrowExceptionWhenGitDirectoryDoesNotExist() {
+        $this->git = new Git('/tmp/some/nonexisting/directory');
+    }
 
-        $this->assertEquals($this->git->dir(), '/tmp/some/directory');
+    public function testShouldHaveReferenceToDirectory() {
+        $this->git = new Git('/tmp');
+
+        $this->assertEquals($this->git->dir(), '/tmp');
     }
 
     public function testShouldBePrintable() {
-        $this->git = new Git('/tmp/some/directory');
+        $this->git = new Git('/tmp');
 
-        $this->assertEquals($this->git, '/tmp/some/directory');
+        $this->assertEquals($this->git, '/tmp');
     }
 
     public function testShouldBeConvertableToHex() {

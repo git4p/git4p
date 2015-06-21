@@ -86,7 +86,12 @@ class Git {
             throw new Exception("Git repository should be initialized with the absolute path to the repository's directory.");
         }
 
+        if (file_exists($dir) === false) {
+            throw new Exception("Referenced Git repository directory does not exist.");
+        }
+
         $this->dir = rtrim($dir, '/');
+
     }
 
     /**
