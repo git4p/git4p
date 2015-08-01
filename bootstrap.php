@@ -13,9 +13,9 @@ ini_set('include_path', ini_get('include_path')
 
 define('GIT4P_TESTDIR', '/tmp/phpunit/git4p/testrepo');
 
-if (file_exists(GIT4P_TESTDIR)) {
+register_shutdown_function(function(){
     delTree(GIT4P_TESTDIR);
-}
+});
 
 mkdir(GIT4P_TESTDIR, 0777, true);
 
