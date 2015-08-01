@@ -1,7 +1,7 @@
 <?php
 
 function delTree($dir) {
-    $files = array_diff(scandir($dir), array('.','..'));
+    $files = array_diff(scandir($dir), ['.','..']);
     foreach ($files as $file) {
         (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
     }
@@ -13,7 +13,7 @@ ini_set('include_path', ini_get('include_path')
 
 define('GIT4P_TESTDIR', '/tmp/phpunit/git4p/testrepo');
 
-register_shutdown_function(function(){
+register_shutdown_function(function () {
     delTree(GIT4P_TESTDIR);
 });
 

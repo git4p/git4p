@@ -87,7 +87,7 @@ class Git {
         }
 
         if (file_exists($dir) === false) {
-            throw new Exception("Referenced Git repository directory does not exist.");
+            throw new Exception('Referenced Git repository directory does not exist.');
         }
 
         $this->dir = rtrim($dir, '/');
