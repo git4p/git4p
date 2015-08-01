@@ -33,8 +33,8 @@ class GitRef {
             while ($line !== false) {
                 $line = trim($line);
                 if ($line{0} != '#' && $line{0} != '^') {
-                    if (strpos($line,' ') == 40)
-                        $refs[substr($line,46)] = substr($line,0,40);
+                    if (strpos($line, ' ') == 40)
+                        $refs[substr($line, 46)] = substr($line, 0, 40);
                 }
                 $line = strtok("\n");
             }

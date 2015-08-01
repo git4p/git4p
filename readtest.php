@@ -44,4 +44,3 @@ function showLog($c) {
 
 
 //var_dump($c);
-
