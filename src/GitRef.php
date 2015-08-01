@@ -22,7 +22,7 @@ class GitRef {
         $this->git = $git;
     }
 
-    public function loadRefs() throw Exception {
+    private function loadRefs() {
         $refs = [];
 
         // load packed refs if any
@@ -32,9 +32,10 @@ class GitRef {
             $line = strtok($file, "\n");
             while ($line !== false) {
                 $line = trim($line);
-                if ($line{0} == '#' || $line{0} == '^') continue;
-                if (strpos($line,' ') != 40) continue;
-                $refs[substr($line,41)] = substr($line,0,40);
+                if ($line{0} != '#' && $line{0} != '^') {
+                    if (strpos($line,' ') == 40)
+                        $refs[substr($line,46)] = substr($line,0,40);
+                }
                 $line = strtok("\n");
             }
 
@@ -43,22 +44,33 @@ class GitRef {
 
         }
 
-        if (count($refs) == 0) {
-            throw new Exception("Unable to load refs.");
-        }
-        else {
-            $this->refs = $refs;
-        }
+        $this->refs = $refs;
     }
 
-    public function listRefs() {
+    private function refs() {
         // Make sure refs are loaded
         if ($this->refs === false) {
             $this->loadRefs();
         }
 
         return $this->refs;
+    }
 
+    // I'd prefer to call this list() but unfortunately that's a reserved word.
+    public function listRefs() {
+        return $this->refs();
+    }
+
+    public function exists($ref) {
+        return array_key_exists($ref, $this->refs());
+    }
+
+    public function ref($ref) {
+        if ($this->exists($ref)) {
+            return $this->refs()[$ref];
+        }
+
+        throw new Exception('Ref does not exist.');
     }
 
 }
