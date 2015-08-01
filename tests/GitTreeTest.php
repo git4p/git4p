@@ -10,7 +10,7 @@ class GitTreeTest extends PHPUnit_Framework_TestCase {
     protected $gittree = false;
 
     public function setup() {
-        $this->git     = new Git('/tmp/phpunit/gittestrepo');
+        $this->git     = new Git(GIT4P_TESTDIR);
         $this->gittree = new GitTree($this->git);
     }
 

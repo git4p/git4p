@@ -7,7 +7,7 @@ class GitObjectTest extends PHPUnit_Framework_TestCase {
     protected $git     = false;
 
     public function setup() {
-        $this->git  = new Git('/tmp/phpunit/gittestrepo');
+        $this->git  = new Git(GIT4P_TESTDIR);
         $this->stub = $this->getMockForAbstractClass('Git4p\GitObject', [$this->git]);
 
         $this->stub->expects($this->any())

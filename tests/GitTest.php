@@ -27,15 +27,15 @@ class GitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testShouldHaveReferenceToDirectory() {
-        $this->git = new Git('/tmp');
+        $this->git = new Git(GIT4P_TESTDIR);
 
-        $this->assertEquals($this->git->dir(), '/tmp');
+        $this->assertEquals($this->git->dir(), GIT4P_TESTDIR);
     }
 
     public function testShouldBePrintable() {
-        $this->git = new Git('/tmp');
+        $this->git = new Git(GIT4P_TESTDIR);
 
-        $this->assertEquals($this->git, '/tmp');
+        $this->assertEquals($this->git, GIT4P_TESTDIR);
     }
 
     public function testShouldBeConvertableToHex() {

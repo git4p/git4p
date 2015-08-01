@@ -10,7 +10,7 @@ class GitBlobTest extends PHPUnit_Framework_TestCase {
     protected $gitblob = false;
 
     public function setup() {
-        $this->git     = new Git('/tmp/phpunit/gittestrepo');
+        $this->git     = new Git(GIT4P_TESTDIR);
         $this->gitblob = new GitBlob($this->git);
     }
 
