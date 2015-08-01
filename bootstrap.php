@@ -26,3 +26,4 @@ require_once 'GitTree.php';
 require_once 'GitCommit.php';
 require_once 'GitTag.php';
 require_once 'GitUser.php';
+require_once 'GitRef.php';
