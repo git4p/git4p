@@ -71,17 +71,12 @@ $git->updateBranch('master', $c->sha());
 Note
 ----
 
-This library currently has no pack support. Not for actual packs nor for packed
-refs. Support is currently being worked on however.
+This library currently has limited pack support. Reading in and listing packed
+refs is supported through GitRef but support for packed objects is not implemented
+yet.
 
 Some TODOs
 ----------
 
-- Add support for packed-refs
 - Add pack support
-- ~~Add basic unit tests~~
-- ~~Add some basic examples in readme~~
 - Add proper phpdoc blocks
-- ~~Add proper styling (PSR-2, without braces, with other extra measures)~~
-- ~~Add proper autoloading (PSR-4)~~
-- Add support for logging? (PSR-3)

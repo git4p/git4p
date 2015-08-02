@@ -18,3 +18,4 @@ include 'GitTree.php';
 include 'GitBlob.php';
 include 'GitTag.php';
 include 'GitUser.php';
+include 'GitRef.php';
