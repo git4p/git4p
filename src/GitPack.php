@@ -32,8 +32,8 @@ class GitPack {
     const OBJ_TREE = 2;
     const OBJ_BLOB = 3;
     const OBJ_TAG = 4;
-    const OBJ_OFS_DELTA = 5;
-    const OBJ_REF_DELTA = 6;
+    const OBJ_OFS_DELTA = 6;
+    const OBJ_REF_DELTA = 7;
 
     public static function typeString($type) {
         switch ($type) {
@@ -105,6 +105,10 @@ class GitPack {
     }
 
     public function getObject($sha) {
+        return $this->readObjectData($this->findObject($sha));
+    }
+
+    public function findObject($sha) {
         $idx = $this->getIndex();
 
         $first = hexdec(substr($sha, 0, 2));
@@ -139,8 +143,85 @@ class GitPack {
         $crc32 = $idx->getInt();
 
         $idx->setPos(2 * 4 + 256 * 4 + $this->idx_size * 20 + $this->idx_size * 4 + $exact_offset * 4);
-        $pack_offset = $idx->getInt();
+        return $idx->getInt();
+    }
 
+    public static function memcpy($src, $srcPos, &$dst, $dstPos, $length)
+    {
+        for ($i = 0; $i < $length; $i++)
+            $dst[$dstPos + $i] = $src[$srcPos + $i];
+    }
+
+    // very direct port from jgit
+    public static function applyDelta($base, $delta)
+    {
+        list($baseHeader, $baseData, ) = explode("\0", $base);
+        list($baseType, $baseDataLen, ) = explode(' ', $baseHeader);
+
+        $resultPtr = 0;
+        $deltaPtr = 0;
+
+        $baseLen = 0;
+        $shift = 0;
+        do {
+            $c = ord($delta[$deltaPtr++]);
+            $baseLen |= ($c & 0x7f) << $shift;
+            $shift += 7;
+        } while ($c & 0x80);
+
+        if ($baseLen != $baseDataLen)
+            throw new \Exception('base length incorrect');
+
+        $resLen = 0;
+        $shift = 0;
+        do {
+            $c = ord($delta[$deltaPtr++]);
+            $resLen |= ($c & 0x7f) << $shift;
+            $shift += 7;
+        } while ($c & 0x80);
+
+        $result = str_repeat("\0", $resLen);
+
+        while ($deltaPtr < strlen($delta)) {
+            $cmd = ord($delta[$deltaPtr++]);
+
+            if (($cmd & 0x80) != 0) {
+                $copyOffset = 0;
+                if ($cmd & 0x01)
+                    $copyOffset = ord($delta[$deltaPtr++]);
+                if ($cmd & 0x02)
+                    $copyOffset |= ord($delta[$deltaPtr++]) << 8;
+                if ($cmd & 0x04)
+                    $copyOffset |= ord($delta[$deltaPtr++]) << 16;
+                if ($cmd & 0x08)
+                    $copyOffset |= ord($delta[$deltaPtr++]) << 24;
+
+                $copySize = 0;
+                if ($cmd & 0x10)
+                    $copySize = ord($delta[$deltaPtr++]);
+                if ($cmd & 0x20)
+                    $copySize |= ord($delta[$deltaPtr++]) << 8;
+                if ($cmd & 0x40)
+                    $copySize |= ord($delta[$deltaPtr++]) << 16;
+
+                if ($copySize == 0)
+                    $copySize = 0x10000;
+
+                self::memcpy($baseData, $copyOffset, $result, $resultPtr, $copySize);
+                $resultPtr += $copySize;
+            } elseif ($cmd != 0) {
+                self::memcpy($delta, $deltaPtr, $result, $resultPtr, $cmd);
+                $deltaPtr += $cmd;
+                $resultPtr += $cmd;
+            } else {
+                throw new \Exception('Zero delta command reserved.');
+            }
+        }
+
+        return static::typeString($baseType) . " $resLen\0" . $result;
+    }
+
+    protected function readObjectData($pack_offset) {
         $pack = $this->getPack();
         $pack->setPos($pack_offset);
 
@@ -156,8 +237,31 @@ class GitPack {
             $sh += 7;
         }
 
-        if ($type > self::OBJ_TAG)
-            throw new \Exception('Delta packed objects not implemented (yet)');
+        if ($type == self::OBJ_OFS_DELTA || $type == self::OBJ_REF_DELTA) {
+
+            $delta = false;
+            $baseObject = false;
+
+            if ($type == self::OBJ_OFS_DELTA) {
+                $c = $pack->getByte();
+                $off = $c & 127;
+                while ($c & 128) {
+                    $off += 1;
+                    $c = $pack->getByte();
+                    $off = ($off << 7) + ($c & 127);
+                }
+
+                $delta = $pack->inflate($size);
+                $base = $this->readObjectData($pack_offset - $off);
+            } else {
+                // completely untested
+                $baseSha = $pack->getSha();
+                $delta = $pack->inflate($size);
+                $base = $this->getObject($baseSha);
+            }
+
+            return static::applyDelta($base, $delta);
+        }
 
         return static::typeString($type) . " $size\0" . $pack->inflate($size);
     }
