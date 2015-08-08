@@ -222,6 +222,9 @@ class GitPack {
     }
 
     protected function readObjectData($pack_offset) {
+        if ($pack_offset === false)
+            return false;
+
         $pack = $this->getPack();
         $pack->setPos($pack_offset);
 
