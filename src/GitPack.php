@@ -121,18 +121,10 @@ class GitPack {
         $idx = $this->getIndex();
 
         $first = hexdec(substr($sha, 0, 2));
-        $offset = false;
-        $num = 0;
+        list($num, $offset) = $this->idx_fanout[$first];
 
-        foreach ($this->idx_fanout as $k => $d) {
-            if ($k == $first) {
-                $offset = $d[1];
-                $num = $d[0];
-                break;
-            }
-        }
-
-        if ($offset === false) return false;
+        if ($num == 0)
+            return false;
 
         $idx->setPos(2 * 4 + 256 * 4 + ($offset - $num) * 20);
 
