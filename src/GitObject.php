@@ -160,4 +160,13 @@ abstract class GitObject {
         return $data[1];
     }
 
+    /**
+     * Validates this GitObject that the given SHA-1 matches the data
+     */
+    public function validate() {
+        if ($this->sha === false)
+            throw new \Exception('Validation impossible without stored hash.');
+
+        return ($this->sha == sha1($this->header().$this->data()));
+    }
 }
