@@ -35,6 +35,8 @@ class GitPack {
     const OBJ_OFS_DELTA = 6;
     const OBJ_REF_DELTA = 7;
 
+    protected static $_cache = false;
+
     public static function typeString($type) {
         switch ($type) {
             case self::OBJ_COMMIT: return 'commit';
@@ -45,13 +47,20 @@ class GitPack {
     }
 
     public static function readObject($git, $sha) {
-        $packs = sprintf('%s/objects/pack/', $git);
-        if (!is_dir($packs))
-            throw new Exception($packs . ' is not a directory.');
+        if (static::$_cache === false) {
+            static::$_cache = [];
 
-        foreach (glob($packs . '*.idx') as $idx) {
-            $path = pathinfo($idx);
-            $pack = new self($git, $path['filename']);
+            $packs = sprintf('%s/objects/pack/', $git);
+            if (!is_dir($packs))
+                throw new Exception($packs . ' is not a directory.');
+
+            foreach (glob($packs . '*.idx') as $idx) {
+                $path = pathinfo($idx);
+                static::$_cache[] = new self($git, $path['filename']);
+            }
+        }
+
+        foreach (static::$_cache as $pack) {
             $ref = $pack->getObject($sha);
             if ($ref !== false)
                 return $ref;
@@ -138,9 +147,6 @@ class GitPack {
         if ($exact_offset === false) return false;
 
         $exact_offset += $offset - $num;
-
-        $idx->setPos(2 * 4 + 256 * 4 + $this->idx_size * 20 + $exact_offset * 4);
-        $crc32 = $idx->getInt();
 
         $idx->setPos(2 * 4 + 256 * 4 + $this->idx_size * 20 + $this->idx_size * 4 + $exact_offset * 4);
         return $idx->getInt();
