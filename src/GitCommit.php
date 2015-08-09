@@ -132,28 +132,23 @@ class GitCommit extends GitObject {
         $this->authors    = [];
         $this->committers = [];
         $this->message    = false;
+        $this->rawdata    = $this->loadRawData($sha);
+        $this->sha        = $sha; // XXX: invalidate when commit is modified
 
-        $lines = explode("\n", $this->loadRawData($sha));
+        list($headers, $message) = explode("\n\n", $this->rawdata, 2);
 
-        $message = '';
+        foreach(explode("\n", $headers) as $header) {
+            list($key, $value) = explode(' ', $header, 2);
 
-        foreach($lines as $line) {
-            $elements = explode(' ', trim($line), 2);
-
-            if (count($elements) == 1) {
-                $message .= $elements[0];
-                continue;
-            }
-
-            switch($elements[0]) {
+            switch($key) {
                 case 'tree':
-                    $this->setTree($elements[1]);
+                    $this->setTree($value);
                     break;
                 case 'parent':
-                    $this->addParent($elements[1]);
+                    $this->addParent($value);
                     break;
                 case 'author':
-                    preg_match('/^(.+?)\s+<(.+?)>\s+(\d+)\s+([+-]\d{4})$/', $elements[1], $m);
+                    preg_match('/^(.*?)\s+<(.*?)>\s+(\d+)\s+([+-]\d{4})$/', $value, $m);
                     $user = new GitUser();
                     $user->setName($m[1])
                          ->setEmail($m[2])
@@ -162,7 +157,7 @@ class GitCommit extends GitObject {
                     $this->addAuthor($user);
                     break;
                 case 'committer':
-                    preg_match('/^(.+?)\s+<(.+?)>\s+(\d+)\s+([+-]\d{4})$/', $elements[1], $m);
+                    preg_match('/^(.*?)\s+<(.*?)>\s+(\d+)\s+([+-]\d{4})$/', $value, $m);
                     $user = new GitUser();
                     $user->setName($m[1])
                          ->setEmail($m[2])
@@ -171,8 +166,7 @@ class GitCommit extends GitObject {
                     $this->addCommiter($user);
                     break;
                 default:
-                    $message .= $elements[0].' '.$elements[1];
-                    break;
+                    throw new \Exception('Unknown header: ' . $key);
             }
         }
 
