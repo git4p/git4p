@@ -19,3 +19,5 @@ include 'GitBlob.php';
 include 'GitTag.php';
 include 'GitUser.php';
 include 'GitRef.php';
+include 'FileBinaryReader.php';
+include 'GitPack.php';

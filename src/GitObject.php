@@ -148,7 +148,13 @@ abstract class GitObject {
      */
     public function loadRawData($sha) {
         $path = sprintf('%s/%s/%s/%s', $this->git->dir(), Git::DIR_OBJECTS, substr($sha, 0, 2), substr($sha, 2));
-        $data = Git::readFile($path, true);
+
+        if (file_exists($path)) {
+            $data = Git::readFile($path, true);
+        } else {
+            $data = GitPack::readObject($this->git->dir(), $sha);
+        }
+
         $data = explode("\0", $data, 2);
 
         return $data[1];
