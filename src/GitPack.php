@@ -118,8 +118,8 @@ class GitPack {
     }
 
     // binary binary search
-    public static function bbsearch($key, $base) {
-        $size = strlen($key);
+    public static function bbsearch($key, $size, $base) {
+        $keylen = strlen($key);
         $nmemb = strlen($base) / $size;
 
         $lo = 0;
@@ -127,7 +127,7 @@ class GitPack {
 
         while ($lo <= $hi) {
             $mid = (int)(($hi - $lo) / 2) + $lo;
-            $v = substr($base, $size * $mid, $size);
+            $v = substr($base, $size * $mid, $keylen);
             if ($v < $key) {
                 $lo = $mid + 1;
             } elseif ($v > $key) {
@@ -142,6 +142,15 @@ class GitPack {
 
     public function findObject($sha) {
         $idx = $this->getIndex();
+        $sha_len = strlen($sha);
+
+        if ($sha_len < 4)
+            return false;
+
+        if ($sha_len % 2 > 0) {
+            $sha_len--;
+            $sha = substr($sha, 0, $sha_len);
+        }
 
         $first = hexdec(substr($sha, 0, 2));
         list($num, $offset) = $this->idx_fanout[$first];
@@ -151,7 +160,7 @@ class GitPack {
 
         $idx->setPos(2 * 4 + 256 * 4 + ($offset - $num) * 20);
         $data = $idx->read(20 * $num);
-        $exact_offset = self::bbsearch(hex2bin($sha), $data);
+        $exact_offset = self::bbsearch(hex2bin($sha), 20, $data);
 
         if ($exact_offset === false) return false;
 

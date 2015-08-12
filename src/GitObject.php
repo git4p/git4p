@@ -149,11 +149,21 @@ abstract class GitObject {
     public function loadRawData($sha) {
         $path = sprintf('%s/%s/%s/%s', $this->git->dir(), Git::DIR_OBJECTS, substr($sha, 0, 2), substr($sha, 2));
 
-        if (file_exists($path)) {
+        $data = false;
+        if (strlen($sha) < 40) {
+            $hits = glob($path . '*');
+            if (count($hits) > 0) {
+                $data = Git::readFile($hits[0], true);
+            }
+        } elseif (file_exists($path)) {
             $data = Git::readFile($path, true);
-        } else {
-            $data = GitPack::readObject($this->git->dir(), $sha);
         }
+
+        if ($data === false)
+            $data = GitPack::readObject($this->git->dir(), $sha);
+
+        if ($data === false)
+            return false;
 
         $data = explode("\0", $data, 2);
 
