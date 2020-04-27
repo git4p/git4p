@@ -1,3 +1,7 @@
+
+**Status:** No longer active / archived
+
+
 [![Build Status](https://travis-ci.org/git4p/git4p.svg?branch=master)](https://travis-ci.org/git4p/git4p)
 [![Codacy Badge](https://api.codacy.com/project/badge/coverage/0fcd1628445e421791b7a39bbefe41ff)](https://www.codacy.com/app/martijn-niji/git4p)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/0fcd1628445e421791b7a39bbefe41ff)](https://www.codacy.com/app/martijn-niji/git4p)
